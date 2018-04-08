@@ -1,0 +1,2 @@
+# AGOT-VAPID
+# AGOT-VAPID
