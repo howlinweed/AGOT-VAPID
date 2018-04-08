@@ -1,4 +1,4 @@
-#AGOT VAPID
+AGOT VAPID
 
 A submod for the Crusader Kings 2 'A Game of Thrones' mod. It provides some additional features such as:
 
