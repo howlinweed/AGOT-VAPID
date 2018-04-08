@@ -1,0 +1,296 @@
+#House Words, when used it must be in a seperate option with the trigger has_house_words_trigger = yes
+#If more canon words are revealed add them here and add the dynasty to the scripted trigger
+defined_text = {
+	name = GetHouseWords
+	
+	text = { 
+		localisation_key = HouseWords_Allyrion
+		trigger = { dynasty = 9 }
+	}
+	text = { 
+		localisation_key = HouseWords_Ambrose
+		trigger = { dynasty = 297 }
+	}
+	text = { 
+		localisation_key = HouseWords_Arryn
+		trigger = { 
+			OR = {
+				dynasty = 178
+				dynasty = 8000178
+			}
+		}
+	}
+	text = { 
+		localisation_key = HouseWords_Ashford
+		trigger = { dynasty = 265 }
+	}
+	text = { 
+		localisation_key = HouseWords_Baratheon
+		trigger = { 
+			OR = {
+				dynasty = 317
+				dynasty = 1544
+			}
+		}
+	}
+	text = { 
+		localisation_key = HouseWords_Beesbury
+		trigger = { dynasty = 282 }
+	}
+	text = { 
+		localisation_key = HouseWords_Bolton
+		trigger = { dynasty = 87 }
+	}
+	text = { 
+		localisation_key = HouseWords_Buckwell
+		trigger = { dynasty = 34 }
+	}
+	text = { 
+		localisation_key = HouseWords_Bulwer
+		trigger = { dynasty = 284 }
+	}
+	text = { 
+		localisation_key = HouseWords_Caron
+		trigger = { dynasty = 301 }
+	}
+	text = { 
+		localisation_key = HouseWords_Cerwyn
+		trigger = { dynasty = 61 }
+	}
+	text = { 
+		localisation_key = HouseWords_Codd
+		trigger = { dynasty = 174419 }
+	}
+	text = { 
+		localisation_key = HouseWords_Crakehall
+		trigger = { dynasty = 227 }
+	}
+	text = { 
+		localisation_key = HouseWords_Egen
+		trigger = { dynasty = 175 }
+	}
+	text = { 
+		localisation_key = HouseWords_Flint
+		trigger = { dynasty = 84 }
+	}
+	text = { 
+		localisation_key = HouseWords_Follard
+		trigger = { dynasty = 21 }
+	}
+	text = { 
+		localisation_key = HouseWords_Footly
+		trigger = { dynasty = 248 }
+	}
+	text = { 
+		localisation_key = HouseWords_Forrester
+		trigger = { dynasty = 1443 }
+	}
+	text = { 
+		localisation_key = HouseWords_Fossoway #of Cider Hall
+		trigger = { dynasty = 261 }
+	}
+	text = { 
+		localisation_key = HouseWords_Fowler
+		trigger = { dynasty = 14 }
+	}
+	text = { 
+		localisation_key = HouseWords_Graceford
+		trigger = { dynasty = 242 }
+	}
+	text = { 
+		localisation_key = HouseWords_Grandison
+		trigger = { dynasty = 308 }
+	}
+	text = { 
+		localisation_key = HouseWords_Greyjoy
+		trigger = { dynasty = 107 }
+	}
+	text = { 
+		localisation_key = HouseWords_Hastwyck
+		trigger = { dynasty = 267 }
+	}
+	text = { 
+		localisation_key = HouseWords_Hightower
+		trigger = { dynasty = 285 }
+	}
+	text = { 
+		localisation_key = HouseWords_Hornwood
+		trigger = { dynasty = 83 }
+	}
+	text = { 
+		localisation_key = HouseWords_Jordayne
+		trigger = { dynasty = 10 }
+	}
+	text = { 
+		localisation_key = HouseWords_Karstark
+		trigger = { dynasty = 89 }
+	}
+	text = { 
+		localisation_key = HouseWords_Lannister
+		trigger = { dynasty = 190 }
+	}
+	text = { 
+		localisation_key = HouseWords_Lonmouth
+		trigger = { dynasty = 305 }
+	}
+	text = { 
+		localisation_key = HouseWords_Marbrand
+		trigger = { dynasty = 212 }
+	}
+	text = { 
+		localisation_key = HouseWords_Martell
+		trigger = { dynasty = 1 }
+	}
+	text = { 
+		localisation_key = HouseWords_Mormont
+		trigger = { dynasty = 102 }
+	}
+	text = { 
+		localisation_key = HouseWords_Mallister
+		trigger = { dynasty = 128 }
+	}
+	text = { 
+		localisation_key = HouseWords_Merryweather
+		trigger = { dynasty = 263 }
+	}
+	text = { 
+		localisation_key = HouseWords_Mooton
+		trigger = { dynasty = 138 }
+	}
+	text = { 
+		localisation_key = HouseWords_Oakheart
+		trigger = { dynasty = 237 }
+	}
+	text = { 
+		localisation_key = HouseWords_Peckledon
+		trigger = { dynasty = 219 }
+	}
+	text = { 
+		localisation_key = HouseWords_Penrose
+		trigger = { dynasty = 320 }
+	}
+	text = { 
+		localisation_key = HouseWords_Piper
+		trigger = { dynasty = 157 }
+	}
+	text = { 
+		localisation_key = HouseWords_Plumm
+		trigger = { dynasty = 226 }
+	}
+	text = { 
+		localisation_key = HouseWords_Redfort
+		trigger = { dynasty = 183 }
+	}
+	text = { 
+		localisation_key = HouseWords_Royce
+		trigger = { dynasty = 187 }
+	}
+	text = { 
+		localisation_key = HouseWords_Sarsfield
+		trigger = { dynasty = 233 }
+	}
+	text = { 
+		localisation_key = HouseWords_Sarwyck
+		trigger = { dynasty = 2159 }
+	}
+	text = { 
+		localisation_key = HouseWords_Serrett
+		trigger = { dynasty = 221 }
+	}
+	text = { 
+		localisation_key = HouseWords_Smallwood
+		trigger = { dynasty = 156 }
+	}
+	text = { 
+		localisation_key = HouseWords_Stark
+		trigger = { dynasty = 59 }
+	}
+	text = { 
+		localisation_key = HouseWords_Stokeworth
+		trigger = { dynasty = 35 }
+	}
+	text = { 
+		localisation_key = HouseWords_Swygert
+		trigger = { dynasty = 361 }
+	}
+	text = { 
+		localisation_key = HouseWords_Swyft
+		trigger = { dynasty = 228 }
+	}
+	text = { 
+		localisation_key = HouseWords_Tallhart
+		trigger = { dynasty = 101 }
+	}
+	text = { 
+		localisation_key = HouseWords_Targaryen
+		trigger = { dynasty = 496 }
+	}
+	text = { 
+		localisation_key = HouseWords_Tarly
+		trigger = { dynasty = 296 }
+	}
+	text = { 
+		localisation_key = HouseWords_Tollett
+		trigger = { dynasty = 162 }
+	}
+	text = { 
+		localisation_key = HouseWords_Toyne
+		trigger = { dynasty = 307 }
+	}
+	text = { 
+		localisation_key = HouseWords_Trant
+		trigger = { dynasty = 304 }
+	}
+	text = { 
+		localisation_key = HouseWords_Tully
+		trigger = { dynasty = 159 }
+	}
+	text = { 
+		localisation_key = HouseWords_Tyrell
+		trigger = { dynasty = 253 }
+	}
+	text = { 
+		localisation_key = HouseWords_Velaryon
+		trigger = { dynasty = 52 }
+	}
+	text = { 
+		localisation_key = HouseWords_Waxley
+		trigger = { dynasty = 189 }
+	}
+	text = { 
+		localisation_key = HouseWords_Wendwater
+		trigger = { dynasty = 44 }
+	}
+	text = { 
+		localisation_key = HouseWords_Wensington
+		trigger = { dynasty = 333 }
+	}
+	text = { 
+		localisation_key = HouseWords_Westerling
+		trigger = { dynasty = 199 }
+	}
+	text = { 
+		localisation_key = HouseWords_Westford
+		trigger = { dynasty = 2158 }
+	}
+	text = { 
+		localisation_key = HouseWords_Whitehill
+		trigger = { dynasty = 70 }
+	}
+	text = { 
+		localisation_key = HouseWords_Wode
+		trigger = { dynasty = 136 }
+	}
+	text = { 
+		localisation_key = HouseWords_Wydman
+		trigger = { dynasty = 180 }
+	}
+	text = { 
+		localisation_key = HouseWords_Yronwood
+		trigger = { dynasty = 12 }
+	}
+	text = { 
+		localisation_key = HouseWords_VAPID
+		trigger = { has_dynasty_flag = flag_house_words }
+	}
+}

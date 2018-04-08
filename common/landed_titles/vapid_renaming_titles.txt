@@ -1,0 +1,8 @@
+c_house_words = { #title that allows you to set house words
+	color={ 180 180 180 }
+	color2={ 255 255 255 }
+	
+	allow = {
+		always = no
+	}
+}

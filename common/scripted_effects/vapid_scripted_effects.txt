@@ -1,0 +1,198 @@
+generate_dragon_name_effect = {
+	random_list = {
+		1 = { add_trait = dragon_1 }
+		1 = { add_trait = dragon_2 }
+		1 = { add_trait = dragon_3 }
+		1 = { add_trait = dragon_4 }
+		1 = { add_trait = dragon_5 }
+		1 = { add_trait = dragon_6 }
+		1 = { add_trait = dragon_7 }
+		1 = { add_trait = dragon_8 }
+		1 = { add_trait = dragon_9 }
+		1 = { add_trait = dragon_10 }
+		1 = { add_trait = dragon_11 }
+		1 = { add_trait = dragon_12 }
+		1 = { add_trait = dragon_13 }
+		1 = { add_trait = dragon_14 }
+		1 = { add_trait = dragon_15 }
+		1 = { add_trait = dragon_16 }
+		1 = { add_trait = dragon_17 }
+		1 = { add_trait = dragon_18 }
+		1 = { add_trait = dragon_19 }
+		1 = { add_trait = dragon_20 }
+		1 = { add_trait = dragon_21 }
+		1 = { add_trait = dragon_22 }
+		1 = { add_trait = dragon_23 }
+		1 = { add_trait = dragon_24 }
+		1 = { add_trait = dragon_25 }
+		1 = { add_trait = dragon_26 }
+		1 = { #Balerion
+			modifier = {
+				factor = 0.05
+			}
+			add_trait = dragon_27 
+		}
+	}
+	random_list = {
+		1 = {
+			give_nickname = nick_colour
+		}
+		1 = {
+			give_nickname = nick_colour_flame
+		}
+		1 = {
+			give_nickname = nick_colour_fire
+		}
+		1 = {
+			modifier = {
+				factor = 0
+				is_female = yes
+			}
+			give_nickname = nick_colour_king
+		}
+		1 = {
+			modifier = {
+				factor = 0
+				is_female = no
+			}
+			give_nickname = nick_colour_queen
+		}
+		1 = {
+			give_nickname = nick_colour_beast
+		}
+		1 = {
+			give_nickname = nick_colour_whip
+		}
+		1 = {
+			give_nickname = nick_colour_dread
+		}
+		1 = {
+			give_nickname = nick_colour_scale
+		}
+		1 = {
+			give_nickname = nick_colour_wing
+		}
+		1 = {
+			give_nickname = nick_colour_fury
+		}
+		1 = {
+			give_nickname = nick_colour_ghost
+		}
+		1 = {
+			give_nickname = nick_the_furious
+		}
+		1 = {
+			give_nickname = nick_the_elusive
+		}
+		1 = {
+			give_nickname = nick_the_ghost
+		}
+		1 = {
+			give_nickname = nick_the_splendid
+		}
+		1 = {
+			give_nickname = nick_the_smouldering
+		}
+		1 = {
+			give_nickname = nick_the_sly
+		}
+		1 = {
+			give_nickname = nick_the_diabolical
+		}
+		1 = {
+			give_nickname = nick_the_bloody
+		}
+		1 = {
+			give_nickname = nick_the_doombringer
+		}
+		1 = {
+			give_nickname = nick_the_ravager
+		}
+		1 = {
+			give_nickname = nick_the_light_claw
+		}
+		1 = {
+			give_nickname = nick_the_dark_eye
+		}
+		1 = {
+			modifier = {
+				factor = 0
+				NOR = {
+					trait = dragon_1
+					trait = dragon_7 
+					trait = dragon_17
+					trait = dragon_22
+					trait = dragon_23
+					trait = dragon_24
+					trait = dragon_25
+					trait = dragon_26
+					trait = dragon_27
+				}
+			}
+			give_nickname = nick_shadow
+		}
+		1 = {
+			give_nickname = nick_the_ravenous
+		}
+		1 = {
+			give_nickname = nick_the_baleful
+		}
+		1 = {
+			give_nickname = nick_the_lazy
+		}
+		1 = { 
+			give_nickname = nick_blazing_fire 
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				NOR = {
+					trait = dragon_3
+					trait = dragon_5
+					trait = dragon_6
+					trait = dragon_9
+					trait = dragon_10
+					trait = dragon_11
+					trait = dragon_12
+					trait = dragon_14
+					trait = dragon_16
+					trait = dragon_19
+					trait = dragon_21
+				}
+			}
+			give_nickname = nick_shining_light 
+		}
+		1 = { 
+			modifier = {
+				factor = 0
+				is_female = no
+			}
+			modifier = {
+				factor = 0
+				NOR = {
+					trait = dragon_3
+					trait = dragon_5
+					trait = dragon_6
+					trait = dragon_9
+					trait = dragon_10
+					trait = dragon_11
+					trait = dragon_12
+					trait = dragon_14
+					trait = dragon_16
+					trait = dragon_19
+					trait = dragon_21
+				}
+			}
+			give_nickname = nick_shining_queen 
+		}
+		1 = { 
+			give_nickname = nick_destroyer 
+		}
+		1 = { 
+			give_nickname = nick_snake 
+		}
+		1 = { 
+			give_nickname = nick_blood_fire 
+		}
+	}
+}

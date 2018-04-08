@@ -1,0 +1,1572 @@
+###AGOT on death event### Is now hidden
+character_event = {
+	id = 45340
+	desc = "EVTDESC45340"
+	picture = "GFX_evt_death"
+	
+	is_triggered_only = yes 
+
+	hide_window = yes
+	
+	immediate = {
+		#dishonorable
+		if = {
+			limit = {
+				check_variable = { which = "dishonorable" value = 19.9 }						
+			}
+			change_variable = { which = dishonorable value = -10 } #less 10 dishonour is inherited			
+			current_heir = { 
+				if = {
+					limit = {
+						OR = {								
+							is_child_of = ROOT
+							AND = { #Non-child heirs do not inherit if they've already inherited dishonour
+								dynasty = ROOT
+								NOR = {
+									trait = dyn_dishonorable1
+									trait = dyn_dishonorable2
+									trait = dyn_dishonorable3
+									trait = dyn_dishonorable4
+									trait = dyn_dishonorable5
+									trait = dyn_dishonorable6
+									trait = dyn_dishonorable7
+									trait = dyn_dishonorable8
+									trait = dyn_dishonorable9
+									trait = dyn_dishonorable10
+								}
+							}
+						}
+					}
+					set_character_flag = heir	
+					change_variable = { which = "dishonorable" which = ROOT }					
+					if = { #add to existing dishonour
+						limit = {
+							OR = {
+								trait = dishonorable1
+								trait = dishonorable2
+								trait = dishonorable3
+								trait = dishonorable4
+								trait = dishonorable5
+								trait = dishonorable6
+								trait = dishonorable7
+								trait = dishonorable8
+								trait = dishonorable9
+								trait = dishonorable10
+							}
+						}
+						remove_trait = dishonorable1
+						remove_trait = dishonorable2
+						remove_trait = dishonorable3
+						remove_trait = dishonorable4
+						remove_trait = dishonorable5
+						remove_trait = dishonorable6
+						remove_trait = dishonorable7
+						remove_trait = dishonorable8
+						remove_trait = dishonorable9
+						remove_trait = dishonorable10
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 9.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 19.9 } }
+							}
+							add_trait = dishonorable1		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 19.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 29.9 } }
+							}
+							add_trait = dishonorable2		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 29.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 39.9 } }
+							}
+							add_trait = dishonorable3		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 39.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 49.9 } }
+							}
+							add_trait = dishonorable4		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 49.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 59.9 } }
+							}
+							add_trait = dishonorable5		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 59.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 69.9 } }
+							}
+							add_trait = dishonorable6	
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 69.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 79.9 } }
+							}
+							add_trait = dishonorable7		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 79.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 89.9 } }
+							}
+							add_trait = dishonorable8		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 89.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 99.9 } }
+							}
+							add_trait = dishonorable9
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 99.9 }
+							}
+							add_trait = dishonorable10
+							set_variable = { which = "dishonorable" value = 100 }	#MAX
+						}
+						set_character_flag = dishonorable_inherited
+					}
+					if = { #If no existing dishonor, add stain trait
+						limit = { NOT = { has_character_flag = dishonorable_inherited } }
+						remove_trait = dyn_dishonorable1
+						remove_trait = dyn_dishonorable2
+						remove_trait = dyn_dishonorable3
+						remove_trait = dyn_dishonorable4
+						remove_trait = dyn_dishonorable5
+						remove_trait = dyn_dishonorable6
+						remove_trait = dyn_dishonorable7
+						remove_trait = dyn_dishonorable8
+						remove_trait = dyn_dishonorable9
+						remove_trait = dyn_dishonorable10
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 9.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 19.9 } }
+							}
+							add_trait = dyn_dishonorable1		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 19.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 29.9 } }
+							}
+							add_trait = dyn_dishonorable2		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 29.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 39.9 } }
+							}
+							add_trait = dyn_dishonorable3		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 39.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 49.9 } }
+							}
+							add_trait = dyn_dishonorable4		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 49.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 59.9 } }
+							}
+							add_trait = dyn_dishonorable5		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 59.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 69.9 } }
+							}
+							add_trait = dyn_dishonorable6	
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 69.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 79.9 } }
+							}
+							add_trait = dyn_dishonorable7		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 79.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 89.9 } }
+							}
+							add_trait = dyn_dishonorable8		
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 89.9 }
+								NOT = { check_variable = { which = "dishonorable" value = 99.9 } }
+							}
+							add_trait = dyn_dishonorable9
+						}
+						if = {
+							limit = {
+								check_variable = { which = "dishonorable" value = 99.9 }
+							}
+							add_trait = dyn_dishonorable10
+							set_variable = { which = "dishonorable" value = 100 }	#MAX
+						}
+					}
+					if = {
+						limit = { NOT = { has_character_flag = dishonor_decay_check } }
+						set_character_flag = dishonor_decay_check
+						character_event = { id = maintenance.4 days = 3650 } #Dishonor decays every 10 years
+					}
+					clr_character_flag = dishonorable_inherited
+				}					
+			}
+			any_child = { 
+				limit = {
+					is_alive = yes
+					NOT = { has_character_flag = heir }
+				}
+				change_variable = { which = "dishonorable" which = ROOT }					
+				if = { #add to existing dishonour
+					limit = {
+						OR = {
+							trait = dishonorable1
+							trait = dishonorable2
+							trait = dishonorable3
+							trait = dishonorable4
+							trait = dishonorable5
+							trait = dishonorable6
+							trait = dishonorable7
+							trait = dishonorable8
+							trait = dishonorable9
+							trait = dishonorable10
+						}
+					}
+					remove_trait = dishonorable1
+					remove_trait = dishonorable2
+					remove_trait = dishonorable3
+					remove_trait = dishonorable4
+					remove_trait = dishonorable5
+					remove_trait = dishonorable6
+					remove_trait = dishonorable7
+					remove_trait = dishonorable8
+					remove_trait = dishonorable9
+					remove_trait = dishonorable10
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 9.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 19.9 } }
+						}
+						add_trait = dishonorable1		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 19.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 29.9 } }
+						}
+						add_trait = dishonorable2		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 29.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 39.9 } }
+						}
+						add_trait = dishonorable3		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 39.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 49.9 } }
+						}
+						add_trait = dishonorable4		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 49.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 59.9 } }
+						}
+						add_trait = dishonorable5		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 59.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 69.9 } }
+						}
+						add_trait = dishonorable6	
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 69.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 79.9 } }
+						}
+						add_trait = dishonorable7		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 79.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 89.9 } }
+						}
+						add_trait = dishonorable8		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 89.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 99.9 } }
+						}
+						add_trait = dishonorable9
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 99.9 }
+						}
+						add_trait = dishonorable10
+						set_variable = { which = "dishonorable" value = 100 }	#MAX
+					}
+					set_character_flag = dishonorable_inherited
+				}
+				if = { #If no existing dishonor, add stain trait
+					limit = { NOT = { has_character_flag = dishonorable_inherited } }
+					remove_trait = dyn_dishonorable1
+					remove_trait = dyn_dishonorable2
+					remove_trait = dyn_dishonorable3
+					remove_trait = dyn_dishonorable4
+					remove_trait = dyn_dishonorable5
+					remove_trait = dyn_dishonorable6
+					remove_trait = dyn_dishonorable7
+					remove_trait = dyn_dishonorable8
+					remove_trait = dyn_dishonorable9
+					remove_trait = dyn_dishonorable10
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 9.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 19.9 } }
+						}
+						add_trait = dyn_dishonorable1		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 19.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 29.9 } }
+						}
+						add_trait = dyn_dishonorable2		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 29.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 39.9 } }
+						}
+						add_trait = dyn_dishonorable3		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 39.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 49.9 } }
+						}
+						add_trait = dyn_dishonorable4		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 49.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 59.9 } }
+						}
+						add_trait = dyn_dishonorable5		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 59.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 69.9 } }
+						}
+						add_trait = dyn_dishonorable6	
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 69.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 79.9 } }
+						}
+						add_trait = dyn_dishonorable7		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 79.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 89.9 } }
+						}
+						add_trait = dyn_dishonorable8		
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 89.9 }
+							NOT = { check_variable = { which = "dishonorable" value = 99.9 } }
+						}
+						add_trait = dyn_dishonorable9
+					}
+					if = {
+						limit = {
+							check_variable = { which = "dishonorable" value = 99.9 }
+						}
+						add_trait = dyn_dishonorable10
+						set_variable = { which = "dishonorable" value = 100 }	#MAX
+					}
+				}
+				if = {
+					limit = { NOT = { has_character_flag = dishonor_decay_check } }
+					set_character_flag = dishonor_decay_check
+					character_event = { id = maintenance.4 days = 3650 } #Dishonor decays every 10 years
+				}
+				clr_character_flag = dishonorable_inherited
+			}	
+			current_heir = { clr_character_flag = heir }			
+		}	
+		#Valyrian Steel Inheritance
+		if = {
+			limit = { NOT = { has_character_flag = do_not_inherit_sword } }
+			if = {
+				limit = { 
+					has_artifact = dawn 
+					OR = {
+						is_alive = no
+						is_dying = yes
+					}
+				}
+				add_trait = dawn
+				random_artifact = {
+					limit = { artifact_type = dawn }
+					unsafe_destroy_artifact = yes
+				}
+			}
+			if = {
+				limit = { 
+					has_artifact = lightbringer
+					OR = {
+						is_alive = no
+						is_dying = yes
+					}
+				}
+				add_trait = lightbringer
+				random_artifact = {
+					limit = { artifact_type = lightbringer }
+					unsafe_destroy_artifact = yes
+				}
+			}
+			any_artifact = {
+				limit = {
+					OR = {
+						has_artifact_flag = valyrian_steel
+						has_artifact_flag = valyrian_armour
+					}
+					NOT = { artifact_type = dawn }
+				}
+				save_event_target_as = valyrian_sword_to_inherit
+				set_artifact_flag = previous_holder_@ROOT
+				
+				#Add trait for history
+				if = {
+					limit = {
+						ROOT = {
+							OR = {
+								is_alive = no
+								is_dying = yes
+							}
+						}	
+					}
+					if = {
+						limit = { artifact_type = ice }
+						ROOT = {
+							add_trait = ice
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = longclaw }
+						ROOT = {
+							add_trait = longclaw
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = longclaw_snow }
+						ROOT = {
+							add_trait = longclaw_snow
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = blackfyre }
+						ROOT = {
+							add_trait = blackfyre
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = darksister }
+						ROOT = {
+							add_trait = darksister
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = widowswail }
+						ROOT = {
+							add_trait = widowswail
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = oathkeeper }
+						ROOT = {
+							add_trait = oathkeeper
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = brightroar }
+						ROOT = {
+							add_trait = brightroar
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = heartsbane }
+						ROOT = {
+							add_trait = heartsbane
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = nightfall }
+						ROOT = {
+							add_trait = nightfall
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = ladyforlorn }
+						ROOT = {
+							add_trait = ladyforlorn
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = redrain }
+						ROOT = {
+							add_trait = redrain
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = vigilance }
+						ROOT = {
+							add_trait = vigilance
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = orphan_maker }
+						ROOT = {
+							add_trait = orphan_maker
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = crabspincer }
+						ROOT = {
+							add_trait = crabspincer
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = strangers_mercy }
+						ROOT = {
+							add_trait = strangers_mercy
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = truth }
+						ROOT = {
+							add_trait = truth
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = lamentation }
+						ROOT = {
+							add_trait = lamentation
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = poison }
+						ROOT = {
+							add_trait = poison
+							add_trait = dead_target
+						}	
+					}
+					if = {
+						limit = { artifact_type = valyrian_armour }
+						ROOT = {
+							add_trait = valyrian_armour
+							add_trait = dead_target
+						}	
+					}
+					ROOT = {
+						if = {
+							limit = { NOT = { trait = dead_target } }
+							add_trait = valyrian_steel
+						}
+						remove_trait = dead_target
+					}	
+				}	
+				##
+				
+				ROOT = {
+					add_trait = held_important_artifact
+					if = { #Custom dynastic sword goes back to dynasty head
+						limit = { 
+							event_target:valyrian_sword_to_inherit = {
+								artifact_type = valyrian_steel
+								has_artifact_flag = flag_dynastic_sword
+							}
+							event_target:target_dynasty_sword_creator = { dynasty = ROOT }
+							dynasty_head = {
+								NOT = { character = ROOT }
+								is_alive = yes
+								higher_tier_than = ROOT
+							}
+						}
+						dynasty_head = {
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}
+					if = { #Targaryens give Dark Sister to dynasty head
+						limit = { 
+							event_target:valyrian_sword_to_inherit = { artifact_type = darksister }
+							dynasty = 496
+							dynasty_head = {
+								NOT = { character = ROOT }
+								is_alive = yes
+								higher_tier_than = ROOT
+							}
+						}
+						dynasty_head = {
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}
+					if = { #Corbrays give Lady Forlorn to dynasty head
+						limit = { 
+							event_target:valyrian_sword_to_inherit = { artifact_type = ladyforlorn }
+							dynasty = 176
+							dynasty_head = {
+								NOT = { character = ROOT }
+								is_alive = yes
+								higher_tier_than = ROOT
+							}
+						}
+						dynasty_head = {
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}
+					if = { #golden company always retain blackfyre
+						limit = { 
+							event_target:valyrian_sword_to_inherit = { artifact_type = blackfyre }
+							has_landed_title = d_golden_company							
+						}
+						current_heir = {
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+						}
+						if = {
+							limit = { NOT = { current_heir = { always = yes } } }
+							c_the_citadel = { 
+								holder_scope = { 
+									event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+									character_event = { id = invasions.106 days = 1 } 
+								} 
+							}
+						}
+						add_trait = dead_target
+					}
+					if = { #sword stolen by blacksmith
+						limit = { 
+							has_character_flag = black_thief
+							NOT = { had_character_flag = { flag = black_thief days = 1095 } }
+						}
+						random_opinion_modifier_target = {
+							limit = {
+								has_character_flag = reforge_valyrian_steel
+								has_opinion_modifier = { who = ROOT modifier = opinion_stole_sword }
+								reverse_has_opinion_modifier = { who = ROOT modifier = opinion_resentful_agot }
+							}
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							set_character_flag = blacksmith_died
+							character_event = { id = 250277 }
+							clr_character_flag = reforge_valyrian_steel	
+							ROOT = { add_trait = dead_target }
+						}			
+					}
+					if = { 
+						limit = { 
+							is_ruler = yes
+							current_heir = { 
+								dynasty = ROOT 
+								is_alive = yes  
+							}
+							NOT = { trait = dead_target }
+						}
+						current_heir = {
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+						}
+						add_trait = dead_target
+					}
+					if = { 
+						limit = { NOT = { trait = dead_target } is_patrician = yes }
+						family_palace = {
+							current_heir = { 
+								event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+								character_event = { id = 250277 }
+								ROOT = { add_trait = dead_target }	
+							}					
+						}				
+					}
+					if = { #grandchild if dynasty head
+						limit = { 
+							NOT = { trait = dead_target } 
+							NOT = { dynasty = 0 }
+						}
+						dynasty_head = {
+							if = {
+								limit = { 
+									NOT = { character = ROOT }
+									is_alive = yes 
+									can_inherit_titles_trigger = yes
+									grandchild_of_root_trigger = yes
+								}
+								event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+								character_event = { id = 250277 }
+								ROOT = { add_trait = dead_target }
+							}	
+						}	
+					}
+					if = { 
+						limit = { NOT = { trait = dead_target } }
+						random_child = {
+							limit = { 
+								dynasty = ROOT 
+								is_alive = yes 
+								can_inherit_titles_trigger = yes
+								NOT = {
+									ROOT = {
+										any_child = {
+											dynasty = ROOT 
+											is_alive = yes 
+											NOT = { character = PREVPREV }
+											is_older_than = PREVPREV
+											NOT = { lower_tier_than = PREVPREV }
+											can_inherit_titles_trigger = yes 
+										}
+									}
+								}
+							}
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}
+					if = { 
+						limit = { NOT = { trait = dead_target } }
+						random_child = {
+							limit = { dynasty = ROOT is_alive = yes }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}	
+					if = {
+						limit = { NOT = { trait = dead_target } }
+						random_sibling = {
+							limit = { dynasty = ROOT is_alive = yes }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}	
+					}	
+					if = {
+						limit = { NOT = { trait = dead_target } }
+						random_dynasty_member = {
+							limit = { is_alive = yes }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}
+					}
+					if = {
+						limit = { NOT = { trait = dead_target } }
+						random_child = {
+							limit = { is_primary_heir = yes is_alive = yes }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}
+					}
+					if = {
+						limit = { NOT = { trait = dead_target } }
+						random_child = {
+							limit = { is_alive = yes NOT = { trait = dragon } }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}
+					}
+					if = {
+						limit = { 
+							NOT = { trait = dead_target }
+							any_spouse = { is_alive = yes }		
+						}
+						random_spouse = { 
+							limit = { is_alive = yes }
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 } 
+						}
+						add_trait = dead_target
+					}
+					if = {
+						limit = { 
+							NOT = { trait = dead_target }	
+							liege = { NOT = { character = ROOT } }
+						}
+						liege = { 
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 } 
+						}
+						add_trait = dead_target
+					}
+					if = {
+						limit = { 
+							NOT = { trait = dead_target }	
+							current_heir = { NOT = { character = ROOT } }
+						}
+						current_heir = { 
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+						}
+						add_trait = dead_target
+					}
+					if = {
+						limit = { 
+							NOT = { trait = dead_target }	
+						}
+						random_vassal = { 
+							limit = { 
+								NOT = { character = ROOT } 
+								NOT = { trait = dragon }
+							}
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}
+					}
+					if = {
+						limit = { 
+							NOT = { trait = dead_target }	
+						}
+						random_courtier = { 
+							limit = { 
+								NOT = { character = ROOT }
+								can_press_claims_trigger = yes #no other disinheriting traits
+								NOT_mythical_creature_trigger = yes
+							}
+							event_target:valyrian_sword_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }
+							character_event = { id = 250277 }
+							ROOT = { add_trait = dead_target }
+						}
+					}
+					remove_trait = dead_target
+				}
+			}
+		}
+		#dragons
+		if = {
+			limit = { trait = dragon }
+			any_friend = {
+				if = {
+					limit = { 
+						NOT = { 
+							any_friend = {
+								trait = dragon
+								is_alive = yes
+								NOT = { character = ROOT }
+							}
+						}
+					}
+					remove_trait = dragon_rider	
+					if = { #Check dragon riding dynasty status
+						limit = {
+							NOT = { dynasty = 0 }
+							has_dynasty_flag = dragon_riding_dynasty
+							NOT = { any_dynasty_member = { trait = dragon_rider	is_alive = yes } }
+						}
+						clr_dynasty_flag = dragon_riding_dynasty
+					}					
+				}
+				if = {  #Dany gets another dragon if possible
+					limit = { c_77041 = { character = ROOT } } 
+					dragon = { 
+						limit = { 
+							is_alive = yes
+							has_character_flag = dany_dragon 
+							NOT = { character = ROOT }
+							NOT = { any_friend = { is_alive = yes } }
+						} 
+						add_friend = PREV	
+						clr_character_flag = dany_dragon 						
+					}
+				}	
+			}
+		}
+		if = { #Remove flags from Dany's dragons
+			limit = { 
+				c_77041 = { character = ROOT }
+			}
+			any_child = {
+				limit = { trait = dragon }
+				clr_character_flag = dany_dragon
+			}
+		}
+		if = { 
+			limit = { 
+				any_friend = { trait = dragon is_alive = yes }
+			}
+			if = { #Check dragon riding dynasty status
+				limit = {
+					NOT = { dynasty = 0 }
+					has_dynasty_flag = dragon_riding_dynasty
+					NOT = { any_dynasty_member = { trait = dragon_rider	is_alive = yes NOT = { character = ROOT } } }
+				}
+				clr_dynasty_flag = dragon_riding_dynasty
+			}
+			if = { 
+				limit = { is_patrician = yes }
+				family_palace = {
+					current_heir = { 
+						if = {
+							limit = { 
+								NOT = { any_friend = { trait = dragon is_alive = yes } } 
+								age = 14
+								is_incapable = no
+							}
+							ROOT = {
+								any_friend = {
+									limit = {
+										trait = dragon
+										is_alive = yes
+									}
+									add_friend = PREVPREV
+								}
+							}
+							ROOT = { add_trait = dead_target }
+						}	
+					}
+				}				
+			}
+			if = { 
+				limit = { 
+					is_ruler = yes
+					NOT = { trait = dead_target }
+					current_heir = { 
+						dynasty = ROOT 
+						NOT = { any_friend = { trait = dragon is_alive = yes } }
+						is_alive = yes
+						age = 14
+						is_incapable = no
+						OR = {
+							is_child_of = ROOT
+							mother_even_if_dead = { is_child_of = ROOT }
+							father_even_if_dead = { is_child_of = ROOT }
+						}
+						OR = {
+							at_location = ROOT
+							same_realm = ROOT
+							has_opinion_modifier = { who = ROOT modifier = opinion_de_facto_liege }
+						}
+					}
+				}
+				current_heir = { 
+					ROOT = {
+						any_friend = {
+							limit = {
+								trait = dragon
+								is_alive = yes
+							}
+							add_friend = PREVPREV
+						}
+					}
+				}
+				add_trait = dead_target
+			}			
+			if = {
+				limit = { NOT = { trait = dead_target } }
+				any_friend = {
+					limit = {
+						trait = dragon
+						is_alive = yes
+					}
+					character_event = { id = dragon.2399 } #Goes wild
+				} 
+			}				
+			remove_trait = dead_target
+		}
+		any_artifact = {
+			limit = {
+				artifact_type = dragon_egg
+			}
+			save_event_target_as = dragon_egg_to_inherit
+			set_artifact_flag = previous_holder_@ROOT
+			#Add trait for history
+			if = {
+				limit = {
+					ROOT = {
+						OR = {
+							is_alive = no
+							is_dying = yes
+						}
+					}	
+				}
+				ROOT = { add_trait = dragon_egg }
+			}	
+			ROOT = {
+				add_trait = held_important_artifact
+				if = { 
+					limit = { is_patrician = yes }				
+					family_palace = {
+						current_heir = { 
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+						}
+					}					
+				}
+				if = { 
+					limit = { 
+						is_ruler = yes
+						NOT = { trait = dead_target }
+						current_heir = { 
+							dynasty = ROOT 
+							OR = {
+								is_child_of = ROOT
+								mother_even_if_dead = { is_child_of = ROOT }
+								father_even_if_dead = { is_child_of = ROOT }
+							}
+							is_alive = yes
+						}
+					}
+					current_heir = { 
+						event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+						ROOT = { add_trait = dead_target }	
+					}
+				}
+				if = { #grandchild if dynasty head
+					limit = { 
+						NOT = { trait = dead_target } 
+						NOT = { dynasty = 0 }
+					}
+					dynasty_head = {
+						if = {
+							limit = { 
+								NOT = { character = ROOT }
+								is_alive = yes 
+								can_inherit_titles_trigger = yes
+								grandchild_of_root_trigger = yes
+							}
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+							character_event = { id = dragon.21 }
+						}	
+					}	
+				}
+				if = { 
+					limit = { 
+						NOT = { trait = dead_target }
+					}
+					random_child = {
+						limit = { 
+							dynasty = ROOT 
+							is_alive = yes 
+							can_inherit_titles_trigger = yes
+							NOT = {
+								ROOT = {
+									any_child = {
+										dynasty = ROOT 
+										is_alive = yes 
+										NOT = { character = PREVPREV }
+										is_older_than = PREVPREV
+										NOT = { lower_tier_than = PREVPREV }
+										can_inherit_titles_trigger = yes
+									}
+								}
+							}
+						}
+						event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+						ROOT = { add_trait = dead_target }	
+						character_event = { id = dragon.21 }
+					}
+					if = { 
+						limit = { 
+							is_ruler = yes
+							NOT = { trait = dead_target	}
+							current_heir = { 
+								dynasty = ROOT
+								is_alive = yes
+							}
+						}
+						current_heir = { 
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+						}
+						ROOT = { add_trait = dead_target }
+					}
+					if = {
+						limit = {
+							NOT = { trait = dead_target	}
+						}
+						random_sibling = {
+							limit = { 
+								dynasty = ROOT
+								is_alive = yes
+							}
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+							character_event = { id = dragon.21 }
+						}
+					}	
+					if = {
+						limit = {
+							NOT = { trait = dead_target	}
+							NOT = { dynasty = 0 }
+						}
+						random_dynasty_member = { 
+							limit = {
+								is_alive = yes
+							}
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+							character_event = { id = dragon.21 }
+						}
+					}	
+					if = {
+						limit = {
+							NOT = { trait = dead_target	}
+						}
+						random_child = {
+							limit = { 
+								is_primary_heir = yes 
+								is_alive = yes
+							}
+							event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+							ROOT = { add_trait = dead_target }	
+							character_event = { id = dragon.21 }
+						}
+						if = {
+							limit = {
+								NOT = { trait = dead_target }
+							}
+							random_child = { 
+								limit = { is_alive = yes NOT = { trait = dragon } }
+								event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+								ROOT = { add_trait = dead_target }	
+								character_event = { id = dragon.21 }
+							}
+						}	
+						if = {
+							limit = {
+								NOT = { trait = dead_target }
+							}
+							random_spouse = { 
+								limit = { is_alive = yes }
+								event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+								ROOT = { add_trait = dead_target }	
+								character_event = { id = dragon.21 } 
+							}
+						}
+						if = {
+							limit = {
+								NOT = { trait = dead_target }
+								liege = { NOT = { character = ROOT } }
+							}
+							liege = { 
+								event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+								ROOT = { add_trait = dead_target }	
+								character_event = { id = dragon.21 } 
+							}
+						}
+						if = {
+							limit = {
+								NOT = { trait = dead_target	}
+							}
+							random_vassal = { 
+								event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+								ROOT = { add_trait = dead_target }	
+								character_event = { id = dragon.21 } 
+							}
+						}
+						if = {
+							limit = {
+								NOT = { trait = dead_target	}
+							}
+							random_courtier = { 
+								limit = { 
+									NOT = { character = ROOT }
+									can_press_claims_trigger = yes #no other disinheriting traits
+									NOT_mythical_creature_trigger = yes
+								}
+								event_target:dragon_egg_to_inherit = { transfer_artifact = { from = ROOT to = PREV } }					
+								ROOT = { add_trait = dead_target }	
+								character_event = { id = dragon.21 } 
+							}
+						}
+					}
+				}	
+				remove_trait = dead_target
+			}				
+		}
+		# if = { 
+			# limit = { character = 77041 } #Dany gets her dragons as children back agains on death
+			# dragon = { limit = { character = 77990026 } set_mother = ROOT clr_character_flag = dany_dragon }
+			# dragon = { limit = { character = 77990027 } set_mother = ROOT clr_character_flag = dany_dragon }
+			# dragon = { limit = { character = 77990028 } set_mother = ROOT clr_character_flag = dany_dragon }
+		# }		
+		#Check for spouse disinherited
+		if = {
+			limit = { 
+				spouse = {				
+					trait = disinherited
+					is_female = yes
+					OR = {
+						father = { has_character_flag = matri_inheritance_check }
+						mother = { has_character_flag = matri_inheritance_check }
+						any_sibling = { has_character_flag = matri_inheritance_check }
+					}	
+					NOT = { 
+						any_child = {
+							is_alive = yes
+							NOT = { dynasty = PREV }
+							NOT = { trait = bastard }
+						}
+					}	
+				}	
+			}
+			spouse = {
+				remove_trait = disinherited
+				recalc_succession = yes				
+			}			
+		}	
+		
+		#if = { 
+			#limit = { 
+				#has_character_flag = primo_on_death 
+			#}
+			#current_heir = { 
+				#set_character_flag = primogeniture
+				#character_event = { id = royal_proclamations.15 days = 1 }				
+			#}
+		#}
+		
+		
+		if = {
+			limit = {
+				trait = on_reaving
+				has_character_flag = reaving_begins 
+			}
+			any_opinion_modifier_target = {
+				limit = {
+					trait = on_reaving
+					has_opinion_modifier = { who = ROOT modifier = opinion_on_reaving }
+				}
+				remove_trait = on_reaving
+				clr_character_flag = do_not_disturb
+				clr_character_flag = reaving_begins_reaver
+				clr_character_flag = disputed_lands_raid
+				clr_character_flag = north_essos_raid
+				clr_character_flag = summer_sea_raid
+				clr_character_flag = slavers_bay_raid
+				clr_character_flag = reaving_duel
+			}	
+		}		
+		###Blood Feud
+		if = {
+			limit = { trait = blood_feud }
+			random_dynasty_member = {
+				limit = {
+					is_alive = yes
+					blood_feud = {
+						is_alive = yes
+						has_opinion_modifier = { who = PREV modifier = opinion_blood_feud }
+					}
+				}
+				add_trait = blood_feud
+				ROOT = { add_trait = dead_target }
+			}
+			if = {
+				limit = { NOT = { trait = dead_target } }
+				clr_dynasty_flag = in_blood_feud
+			}			
+			remove_trait = blood_feud
+			remove_trait = dead_target
+		}
+		# ##Inherit Base Value Upgrades
+		# any_demesne_title = {
+			# limit = {
+				# tier = BARON
+				# holding_type = castle
+				# OR = {
+					# has_building = ca_upgrade_bv_1
+					# has_building = ca_upgrade_bv_2
+					# has_building = ca_upgrade_bv_3
+					# has_building = ca_upgrade_bv_4
+					# has_building = ca_upgrade_bv_5
+					# has_building = ca_upgrade_bv_6
+				# }
+			# }
+			# location = { set_province_flag = inherited_upgrade }
+		# }
+		if = { #Junior
+			limit = { 
+				has_character_flag = triarch
+				is_merchant_republic = no  
+			}
+			any_liege = {
+				limit = { is_merchant_republic = yes }
+				job_castellan = {
+					if = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+						}	
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}
+				if = {
+					limit = { ROOT = { NOT = { trait = dead_target } } }
+					random_courtier = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+							is_councillor = yes
+							NOT = { has_job_title = job_physician }
+							NOT = { has_job_title = job_spiritual }
+							NOT = { has_job_title = job_spymaster }
+						}
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}	
+				if = {
+					limit = { ROOT = { NOT = { trait = dead_target } } }
+					random_vassal = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+							OR = {
+								is_voter = yes
+								is_councillor = yes
+							}
+						}
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}	
+				if = {
+					limit = { ROOT = { NOT = { trait = dead_target } } }
+					random_courtier = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+							OR = {
+								is_voter = yes
+								is_councillor = yes
+							}
+						}
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}
+				if = {
+					limit = { ROOT = { NOT = { trait = dead_target } } }
+					random_vassal = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+						}
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}
+				if = {
+					limit = { ROOT = { NOT = { trait = dead_target } } }
+					random_courtier = {
+						limit = { 
+							NOT = { has_character_flag = triarch } 
+							eligible_triarch_trigger = yes
+						}
+						character_event = { id = volantis.21 }
+						ROOT = { add_trait = dead_target }
+					}
+				}
+			}
+			remove_trait = dead_target
+		}
+		#Special Sansa-Harrold Arryn/Littlefinger betrothal
+		if = {
+			limit = {
+				c_9266059 = { character = ROOT }
+			}
+			if = {
+				limit = { has_character_flag = betrothed_to_harry_the_heir }
+				c_94027 = {
+					remove_trait = forbid_marriage
+				}
+			}
+			if = {
+				limit = { has_character_flag = betrothed_to_littlefinger }
+				c_94043 = {
+					remove_trait = forbid_marriage
+				}
+			}
+		}
+		#Jeor Mormont dies, set jorah as son
+		if = {
+			limit = {
+				c_336 = { character = ROOT }
+				c_102 = { always = yes }
+			}
+			c_102 = {
+				set_father = ROOT
+			}
+		}
+		if = { #if great council heir dies restore laws
+			limit = {
+				has_character_modifier = great_council_heir
+			}
+			random_playable_ruler = {
+				limit = {
+					current_heir = { character = ROOT }
+					has_character_flag = has_great_council_heir
+				}	
+				character_event = { id = dynasty.38 days = 2 }
+				clr_character_flag = has_great_council_heir
+			}
+		}
+		#Funeral check
+		if = {
+			limit = {
+				NOR = { # No funerals for stillbriths or youn children
+					trait = stillborn
+					NOT = { age = 10 }
+					trait = dragon
+					has_character_flag = no_funeral
+				}
+				OR = {
+					AND = { # Ruler
+						is_ruler = yes
+						NOT = { dynasty = 0 }
+						current_heir = { dynasty = ROOT } 
+						OR = {
+							ai = no # Player can do funerals whenever they want
+							AND = { # Ai requirements
+								ai = yes
+								wealth = 100
+								OR = { # Good character
+									prestige = 3000
+									piety = 3000
+									trait = dragon_rider
+									trait = chosen_by_rhllor
+									trait = dragon_slayer
+									trait = master_warrior
+									tier = EMPEROR
+									# High stats
+									diplomacy = 18
+									martial = 18
+									stewardship = 18
+									intrigue = 18
+									learning = 18
+									current_heir = { opinion = { who = ROOT value = 75 } } #Friends
+								}
+							}
+						}
+					}
+					AND = { # Non-ruler
+						is_ruler = no
+						liege = { 
+							OR = {
+								is_married = ROOT
+								AND = {
+									dynasty = ROOT 
+									NOT = { dynasty = 0 }
+								}	
+								is_friend = ROOT
+							}	
+						}
+						OR = {
+							liege = { ai = no }
+							AND = {
+								liege = {
+									ai = yes
+									wealth = 100
+								}
+								OR = { # Good character
+									prestige = 3000
+									piety = 3000
+									trait = dragon_rider
+									trait = chosen_by_rhllor
+									trait = dragon_slayer
+									trait = master_warrior
+									tier = EMPEROR
+									# High stats
+									diplomacy = 18
+									martial = 18
+									stewardship = 18
+									intrigue = 18
+									learning = 18
+									liege = { opinion = { who = ROOT value = 75 } } #Friends
+								}
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = { is_ruler = yes }
+				current_heir = { 
+					set_character_flag = funeral_for_ruler
+					character_event = { id = funeral.1 days = 1 } 
+				}
+			}
+			if = {
+				limit = { is_ruler = no }
+				liege = {
+					set_character_flag = funeral_for_courtier
+					character_event = { id = funeral.1 }
+				}
+			}
+		}
+		if = {
+			limit = { has_artifact = gift_zorse }
+			destroy_artifact = gift_zorse
+		}
+	}
+
+	option = {
+		name = "EVTOPTA45340"
+	}
+}

@@ -1,0 +1,5 @@
+on_startup = {
+	events = {
+		vapid.1 #Initialize VAPID
+	}
+}

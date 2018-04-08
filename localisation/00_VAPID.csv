@@ -1,0 +1,66 @@
+###########################
+####VAPID Localisation####
+####V1, Baby!!!        ####
+###########################
+#;;;;;;;;;;;;;;x
+GetArmourName_A;[This.GetArmourName_OneWord_Prefix][This.GetArmourName_OneWord_Suffix];;;;;;;;;;;;;x
+GetArmourName_C;[This.GetArmourName_OneWord];;;;;;;;;;;;;x
+GetArmourName_OneWord_A;[This.GetArmourName_TwoWord_Suffix];;;;;;;;;;;;;x
+GetArmourName_OneWord_B;[This.GetArmourName_OneWord_Special];;;;;;;;;;;;;x
+GetDynamicHornName;Dragon Horn from [This.GetFirstNameWithNick];;;;;;;;;;;;;x
+rename_valyrian_artifact;Rename Valyrian Artifacts;;;;;;;;;;;;;x
+rename_valyrian_artifact_desc;Rename a Valyrian artifact owned by [Root.GetTitledFirstNameWithDynasty].;;;;;;;;;;;;;x
+rename_valyrian_artifact_named;Rename a Valyrian artifact owned by [Root.GetTitledFirstNameWithDynasty].;;;;;;;;;;;;;x
+EVTOPT_change_sword_VAPID.15;Yes, I think I like the name [target_dummy_name.GetFullName].;;;;;;;;;;;;;x
+EVTOPT_change_armour_VAPID.15;Yes, I think I like the name [target_dummy_name.GetFullName].;;;;;;;;;;;;;x
+EVTOPT_change_horn_VAPID.15;Yes, I think I like the name [target_dummy_name.GetHornName].;;;;;;;;;;;;;x
+TOOLTIPvapidCHANGE.15;[target_valyrian_artifact.GetTOOLTIPvapidCHANGE_15];;;;;;;;;;;;;x
+TOOLTIPvapidCHANGE.15_armour;§Y[target_valyrian_artifact.GetFullName]§! will be renamed to §Y[target_dummy_name.GetFullName]§!;;;;;;;;;;;;;x
+TOOLTIPvapidCHANGE.15_horn;§Y[target_valyrian_artifact.GetFullName]§! will be renamed to §Y[target_dummy_name.GetHornName]§!;;;;;;;;;;;;;x
+EVTOPT_reload_VAPID.15;Generate a new name.;;;;;;;;;;;;;x
+TOOLTIPvapidRELOAD.15;A new name will be generated for §Y[target_valyrian_artifact.GetFullName]§!;;;;;;;;;;;;;x
+EVTOPT_cancel_VAPID.15;I guess I'll stick with [target_valyrian_artifact.GetFullName].;;;;;;;;;;;;;x
+EVTDESC_armour_VAPID.15;Rename the armour [target_valyrian_artifact.GetFullName] worn by [From.GetTitledFirstNameWithDynasty] to [target_dummy_name.GetFullName]?;;;;;;;;;;;;;x
+EVTDESC_sword_VAPID.15;Rename the sword [target_valyrian_artifact.GetFullName] wielded by [From.GetTitledFirstNameWithDynasty] to [target_dummy_name.GetFullName]?;;;;;;;;;;;;;x
+EVTDESC_horn_VAPID.15;Rename the [target_valyrian_artifact.GetFullName] which is blown by [From.GetTitledFirstNameWithDynasty] to [target_dummy_name.GetHornName]?;;;;;;;;;;;;;x
+TOOLTIPrename_valyrian_artifactTYPE;[This.GetFullName] must either be a Valyrian Sword, Valyrian Armour, or a Dragon Horn;;;;;;;;;;;;;x
+TOOLTIPrename_valyrian_artifactCANON;[This.GetFullName] must §RNOT§! be a canon sword;;;;;;;;;;;;;x
+TOOLTIPrename_valyrian_artifactEFFECT;[Root.GetSwordRenameEffect];;;;;;;;;;;;;x
+rename_valyrian_artifactEFFECT_herb;You light up some 'inspiration' and think up some names for §Y[FromFrom.GetFullName]§!;;;;;;;;;;;;;x
+rename_valyrian_artifactEFFECT_books;You lock yourself in your library and search for some names for §Y[FromFrom.GetFullName]§!;;;;;;;;;;;;;x
+rename_valyrian_artifactEFFECT_crypt;You visit your ancestral crypt in search of inspiration for some names for §Y[FromFrom.GetFullName]§!;;;;;;;;;;;;;x
+rename_valyrian_artifactEFFECT_wall;You bang your head against the wall to create some names for §Y[FromFrom.GetFullName]§!;;;;;;;;;;;;;x
+rename_valyrian_artifactEFFECT_streak;You communte with nature to seek new names for §Y[FromFrom.GetFullName]§!;;;;;;;;;;;;;x
+EVTDESC_VAPID.2;VAPID auto naming is currently set to: \nSword - [Root.GetVAPIDSword]\nArmour - [Root.GetVAPIDArmour]\nHorn - [Root.GetVAPIDHorn];;;;;;;;;;;;;x
+GetVAPIDStatEnabled;§GENABLED§!;;;;;;;;;;;;;x
+GetVAPIDStatDisabled;§RDISABLED§!;;;;;;;;;;;;;x
+EVTOPT_enable_sword_VAPID.2;I want to §GENABLE§! sword naming.;;;;;;;;;;;;;x
+EVTOPT_disable_sword_VAPID.2;I want to §RDISABLE§! sword naming.;;;;;;;;;;;;;x
+EVTOPT_enable_armour_VAPID.2;I want to §GENABLE§! armour naming.;;;;;;;;;;;;;x
+EVTOPT_disable_armour_VAPID.2;I want to §RDISABLE§! armour naming.;;;;;;;;;;;;;x
+EVTOPT_enable_horn_VAPID.2;I want to §GENABLE§! horn naming.;;;;;;;;;;;;;x
+EVTOPT_disable_horn_VAPID.2;I want to §RDISABLE§! horn naming.;;;;;;;;;;;;;x
+EVTOPT_done_VAPID.2;I'm done managing VAPID.;;;;;;;;;;;;;x
+toggle_artifact_naming;Manage VAPID;;;;;;;;;;;;;x
+toggle_artifact_naming_desc;VAPID auto sword/armour/horn naming is currently set to [Root.GetVAPIDSword]/[Root.GetVAPIDArmour]/[Root.GetVAPIDHorn].;;;;;;;;;;;;;x
+TOOLTIPenable_sword_VAPID.2;§YPlease note§!: You do not need to enable auto sword naming in post doom bookmarks.;;;;;;;;;;;;;x
+EVTTITLE_VAPID.20;[target_valyrian_artifact.GetFullName] has a new home;;;;;;;;;;;;;x
+EVTDESC_VAPID.20;Let it be known that [target_dynasty_sword_creator.GetTitledName], acting as the rightful Head of House [target_dynasty_sword_creator.GetOnlyDynastyName], and using the powers bestowed upon [target_dynasty_sword_creator.GetHerHim] by the Old Gods and the New, has declared that [target_valyrian_artifact.GetFullName] will forever more be known as the ancestral sword of House [target_dynasty_sword_creator.GetOnlyDynastyName]. In accordance with this decree, [target_valyrian_artifact.GetFullName] will be returned back to House [target_dynasty_sword_creator.GetOnlyDynastyName] upon the death of its owner wherein the rightful Head of House [target_dynasty_sword_creator.GetOnlyDynastyName] will choose only the most worthy member to wield it. All previous claims to [target_valyrian_artifact.GetFullName] are hereby nullfied. Let none challange this proclamation as doing so will be considered an act of war and House [target_dynasty_sword_creator.GetOnlyDynastyName] will be honour bound to retaliate.;;;;;;;;;;;;;x
+EVTOPT_dynasty_sword_VAPID.20;None shall challange the power of House [target_dynasty_sword_creator.GetOnlyDynastyName]!;;;;;;;;;;;;;x
+EVTOPT_cancel_VAPID.20;I've changed my mind;;;;;;;;;;;;;x
+declare_dynastic_sword;Create House Sword;;;;;;;;;;;;;x
+declare_dynastic_sword_desc;You can declare one of your valyrian swords as the ancestral sword of House [Root.GetOnlyDynastyName]. This will cause the sword to behave simiarlly to §KDark Sister§! and §BLady Forlorn§!.;;;;;;;;;;;;;x
+TOOLTIPdeclare_dynastic_swordTYPE;[This.GetFullName] must be a non-canon sword and can't already be an ancestral sword of House [Root.GetOnlyDynastyName];;;;;;;;;;;;;x
+TOOLTIPdeclare_dynastic_swordEFFECT;Issue an edict claiming §Y[FromFrom.GetFullName]§! as the ancestral sword of House [Root.GetOnlyDynastyName]. Doing this is irreversible.;;;;;;;;;;;;;x
+create_house_words;[Root.GetHouseWordsStatus];;;;;;;;;;;;;x
+create_house_words_desc;Define or edit the house words used by House [Root.GetOnlyDynastyName].;;;;;;;;;;;;;x
+TOOLTIPcreate_house_wordsNEW;Must not already have house words;;;;;;;;;;;;;x
+TOOLTIPcreate_house_wordsEDIT;Must have non-canon house words;;;;;;;;;;;;;x
+# TOOLTIPdcreate_house_wordsEFFECT;[Root.GetHouseWordsStatus];;;;;;;;;;;;;x
+VAPIDCreateHouseWords;Create House Words;;;;;;;;;;;;;x
+VAPIDChangeHouseWords;Change House Words;;;;;;;;;;;;;x
+EVTDESC_VAPID.25;All shall know the words of House [Root.GetOnlyDynastyName].;;;;;;;;;;;;;x
+EVTOPT_OK_VAPID.25;House Swords;;;;;;;;;;;;;x
+c_house_words;House Words;;;;;;;;;;;;;x
+HouseWords_VAPID;[target_house_words_title.GetName];;;;;;;;;;;;;x
+# toggle_artifact_naming_named;VAPID auto sword/armour/horn naming is currently set to [Root.GetVAPIDSword]/[Root.GetVAPIDArmour]/[Root.GetVAPIDHorn].;;;;;;;;;;;;;x

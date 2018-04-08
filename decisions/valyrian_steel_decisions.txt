@@ -1,0 +1,1469 @@
+# Targetted decisions are possible vs _all_ other characters and shown are in the Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
+#
+# filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] ('self' MUST be set for decisions targetting only the taker, the other filter types can be set to lessen CPU load)
+# ai_target_filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] (which characters for which the AI evaluates the decision.)
+#	court: all characters in the AI's host court, including prisoners, and characters currently away (wards, prisoners, etc)
+#	home_court: all characters in the AI's home court, including prisoners, and characters currently away (wards, prisoners, etc)
+#	vassals: direct vassal rulers of the AI's employer
+#	sub_realm: all characters below the AI's employer
+#	realm: all characters in the same top realm as the AI
+#	dynasty: all members of the same dynasty
+#	all: all living characters (Avoid if possible. VERY CPU-HEAVY!)
+#	
+#!!!!!Check the ai_will_do for custom ancestral swords on granting - it might be mimicking the behavior of ancestral and non-ancestral swords canceling the logic out!!!!
+targetted_decisions = {
+	seize_sword = { #only works for ancestral swords, unless game rule is changed
+		only_playable = yes
+		ai_target_filter = court
+		filter = court
+		third_party_filter = artifacts
+		ai_third_party_filter = artifacts
+		third_party = ROOT
+		
+		from_potential = {
+			is_ruler = yes
+		}
+			
+		potential = {
+			prisoner = yes
+			host = { character = FROM }
+			NOT = { trait = dragon }
+			any_artifact = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					has_artifact_flag = valyrian_armour
+				}
+				NOT = { artifact_type = dawn }
+			}
+		}
+		third_party_potential = {
+			FROMFROM = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					has_artifact_flag = valyrian_armour
+				}	
+				NOT = { artifact_type = dawn }
+			}
+		}
+		
+		third_party_allow = {
+			conditional_tooltip = {
+				trigger = { has_game_rule = { name = seize_valyrian_swords value = default } }
+				FROM = {
+					show_scope_change = no
+					ROOT_FROMFROM = {
+						show_scope_change = no
+						OR = {
+							custom_tooltip = {
+								text = TOOLTIPseize_swordSTOLEN
+								hidden_tooltip = { has_artifact_flag = stolen_from_@PREV }
+							}	
+							custom_tooltip = {
+								text = TOOLTIPseize_swordCLAIM
+								hidden_tooltip = {
+									ROOT = { NOT = { dynasty = ROOT_FROM } }
+									OR = { 
+										AND = {
+											artifact_type = blackfyre
+											FROM = {
+												OR = {
+													dynasty = 496 
+													dynasty = 57
+												}
+											}
+										}
+										AND = {
+											OR = {
+												artifact_type = longclaw 
+												artifact_type = longclaw_snow
+											}	
+											FROM = { dynasty = 102 }
+										}
+										AND = {
+											artifact_type = brightroar	
+											FROM = { dynasty = 190 }
+										}
+										AND = {
+											artifact_type = heartsbane
+											FROM = { dynasty = 296 }
+										}
+										AND = {
+											artifact_type = ice	
+											FROM = { dynasty = 59 }
+										}
+										AND = {
+											artifact_type = nightfall	
+											FROM = { dynasty = 122 }
+										}
+										AND = {
+											artifact_type = darksister
+											FROM = { dynasty = 496 }
+										}
+										AND = {
+											artifact_type = ladyforlorn	
+											FROM = { dynasty = 176 }
+										}
+										AND = {
+											artifact_type = redrain
+											FROM = {
+												OR = {
+													dynasty = 121
+													dynasty = 197
+												}	
+											}
+										}
+										AND = {
+											artifact_type = widowswail
+											FROM = {
+												OR = {
+													dynasty = 59
+													dynasty = 190
+												}	
+											}
+										}
+										AND = {
+											artifact_type = oathkeeper
+											FROM = {
+												OR = {
+													dynasty = 59
+													dynasty = 190
+												}	
+											}
+										}
+										AND = {
+											artifact_type = crabspincer
+											FROM = { dynasty = 50 }
+										}
+										AND = {
+											artifact_type = vigilance	
+											FROM = { dynasty = 285 }
+										}
+										AND = {
+											artifact_type = orphan_maker
+											FROM = { dynasty = 247 }
+										}
+										AND = {
+											artifact_type = truth	
+											FROM = { dynasty = 55999 }
+										}
+										AND = {
+											artifact_type = lamentation	
+											FROM = { dynasty = 187 }
+										}
+										AND = {
+											artifact_type = poison
+											FROM = { dynasty = 982375 }
+										}
+										AND = { #Custom dynastic sword
+											has_artifact_flag = flag_dynastic_sword
+											event_target:target_dynasty_sword_creator = { dynasty = FROM }
+										}
+									}
+								}
+							}
+						}	
+					}	
+				}	
+			}
+		}
+		allow = {
+			prisoner = yes
+			NOT = { has_character_modifier = getting_justice }	
+			NOT = { diplomatic_immunity = yes }
+		}
+			
+		effect = {
+			hidden_tooltip = { add_trait = held_important_artifact }
+			FROM = {
+				ROOT_FROMFROM = {
+					if = { #reforge to ice
+						limit = { 
+							OR = {
+								artifact_type = widowswail
+								artifact_type = oathkeeper 
+							}	
+							ROOT_FROM = { dynasty = 59 }
+							NOT = { any_character = { is_alive = yes has_artifact = ice } }
+						}	
+						unsafe_destroy_artifact = yes
+						ROOT_FROM = { 
+							add_artifact = ice 
+							new_artifact = { set_artifact_flag = stolen_from_@ROOT }
+						}
+					}
+					else = {
+						set_artifact_flag = stolen_from_@ROOT
+						set_artifact_flag = previous_holder_@ROOT
+						clr_artifact_flag = stolen_from_@PREV
+						transfer_artifact = { from = ROOT to = PREV } 
+					}
+				}
+			}	
+			opinion = {
+				who = FROM
+				modifier = opinion_stole_sword
+				years = 100
+			}
+			FROM = { prestige = 50 }
+			hidden_tooltip = {
+				character_event = { id = valyrian_steel.160 }
+			} 
+		}
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	give_valyrian_sword_to_son = {
+		ai_target_filter = dynasty
+		filter = all
+		third_party_filter = artifacts
+		ai_third_party_filter = artifacts
+		third_party = FROM
+		only_rulers = yes
+				
+		from_potential = {
+			is_ruler = yes
+			any_artifact = { 
+				OR = {
+					has_artifact_flag = valyrian_steel
+					has_artifact_flag = valyrian_armour
+				}	
+				NOT = { artifact_type = dawn }
+			}
+		}
+		potential = {	
+			OR = {
+				dynasty = FROM
+				same_realm = FROM
+				is_close_relative = FROM
+			}
+			NOT_mythical_creature_trigger = yes
+			NOT = { character = FROM }			
+		}
+		third_party_potential = {
+			FROMFROM = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					AND = { #AI wont give away valyrian armour
+						has_artifact_flag = valyrian_armour
+						ROOT_FROM = { ai = no }
+					}	
+				}	
+				NOT = { artifact_type = dawn }
+				OR = { #darksister must stay with targaryens
+					NOT = { artifact_type = darksister }
+					ROOT_FROM = { NOT = { dynasty = 496 } }
+					ROOT = { dynasty = ROOT_FROM }
+				}
+				OR = { #lady forlorn must stay with corbrays
+					NOT = { artifact_type = ladyforlorn }
+					ROOT_FROM = { NOT = { dynasty = 176 } }
+					ROOT = { dynasty = ROOT_FROM }
+				}
+				OR = { #custom dynastic sword stays with creator's dynasty
+					NOT = { has_artifact_flag = flag_dynastic_sword }
+					NOT = { event_target:target_dynasty_sword_creator = { dynasty = ROOT_FROM } }
+					ROOT = { dynasty = ROOT_FROM }
+				}
+			}
+		}
+		
+		third_party_allow = {
+			
+		}
+		allow = {		
+			FROM = { has_regent = no }
+		}			
+		effect = {
+			
+			FROM = {
+				hidden_tooltip = { add_trait = held_important_artifact }
+				ROOT_FROMFROM = {
+					if = { #if longclaw snow given to mormonts, convert to ordinary lnogclaw
+						limit = { 
+							artifact_type = longclaw_snow
+							ROOT = { dynasty = 102 }
+						}	
+						unsafe_destroy_artifact = yes
+						ROOT = { add_artifact =  longclaw }
+					}
+					else = {
+						set_artifact_flag = previous_holder_@PREV
+						transfer_artifact = { from = PREV to = ROOT } 
+					}	
+				} 
+			}
+			
+			if = {
+				limit = { dynasty = FROM }
+				if = { #targaryen bastard may become blackfyre dynasty if given blackfyre
+					limit = {
+						FROMFROM = { artifact_type = blackfyre }
+						trait = bastard
+						dynasty = 496
+						can_press_claims_trigger = yes
+						NOR = {
+							trait = eunuch
+							trait = disinherited
+							trait = drowned
+						}
+					}
+					remove_trait = bastard
+					add_trait = legit_bastard
+					dynasty = 57
+					set_dynasty_flag = has_dynamic_coa
+					if = {
+						limit = {
+							has_bastard_nickname_trigger = yes
+						}
+						remove_nickname = yes
+					}
+				}
+				opinion = {
+					who = FROM
+					modifier = opinion_gave_sword_to_me
+					months = 360
+				}
+				if = { #darksister consequences, traditionally goes to targaryen warriors
+					limit = {
+						dynasty = 496
+						FROMFROM = { artifact_type = darksister }
+					}
+					set_character_flag = given_darksister
+					any_dynasty_member = {
+						limit = {
+							is_close_relative = FROM
+							NOT = { character = ROOT }
+							NOT = { character = FROM }
+							OR = {
+								trait = skilled_warrior
+								trait = master_warrior
+							}
+						}
+						opinion = {
+							who = FROM
+							modifier = opinion_didnt_give_sword_to_me
+							months = 60
+						}									
+					}
+				}
+				else_if = { #ladyforlorn consequences, traditionally goes to corbray warriors
+					limit = {
+						dynasty = 176
+						FROMFROM = { artifact_type = ladyforlorn }
+					}
+					set_character_flag = given_ladyforlorn
+					any_dynasty_member = {
+						limit = {
+							is_close_relative = FROM
+							NOT = { character = ROOT }
+							NOT = { character = FROM }
+							OR = {
+								trait = skilled_warrior
+								trait = master_warrior
+							}
+						}
+						opinion = {
+							who = FROM
+							modifier = opinion_didnt_give_sword_to_me
+							months = 60
+						}									
+					}
+				}
+				else_if = { #custom dynastic sword consequences, traditionally goes to dynastic warriors
+					limit = {
+						event_target:target_dynasty_sword_creator = { dynasty = PREV }
+						FROMFROM = { has_artifact_flag = flag_dynastic_sword }
+					}
+					set_character_flag = given_dynastic_sword
+					any_dynasty_member = {
+						limit = {
+							is_close_relative = FROM
+							NOT = { character = ROOT }
+							NOT = { character = FROM }
+							OR = {
+								trait = skilled_warrior
+								trait = master_warrior
+							}
+						}
+						opinion = {
+							who = FROM
+							modifier = opinion_didnt_give_sword_to_me
+							months = 60
+						}									
+					}
+				}
+				else = {
+					FROM = {
+						any_child = {
+							limit = {
+								OR = {
+									is_primary_heir = yes
+									AND = {
+										martial = 10
+										is_female = no
+									}	
+								}
+								NOT = { character = ROOT }					
+							}
+							opinion = {
+								who = FROM
+								modifier = opinion_didnt_give_sword_to_me
+								months = 60
+							}									
+						}
+					}	
+				}	
+			}
+			if = {
+				limit = { NOT = { dynasty = FROM } }
+				opinion = {
+					who = FROM
+					modifier = opinion_gave_sword_to_me
+					months = 360
+					multiplier = 2
+				}
+				FROM = {
+					any_dynasty_member = {
+						limit = {
+							is_alive = yes
+							is_close_relative = FROM
+							NOT = { character = FROM }
+							NOT = { character = ROOT }
+						}
+						opinion = {
+							who = FROM
+							modifier = opinion_didnt_give_sword_to_me
+							months = 60
+						}									
+					}
+				}	
+			}
+			hidden_tooltip = { 
+				letter_event = { id = 250276 }
+			}
+		}
+		ai_check_interval = 6
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.12 # Slow it down a bit
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					NOT = { is_child_of = FROM } #only give to own children
+					FROMFROM = { is_artifact_equipped = yes } #dont give away equipped swords
+				}	
+				
+				#traditional warrior swords exemption
+				NAND = {
+					FROMFROM = { artifact_type = darksister }
+					FROM = { dynasty = 496 }
+				}
+				NAND = {
+					FROMFROM = { artifact_type = ladyforlorn }
+					FROM = { dynasty = 176 }
+				}
+				NAND = { #custom dynastic sword
+					FROMFROM = { has_artifact_flag = flag_dynastic_sword }
+					event_target:target_dynasty_sword_creator = { dynasty = FROM }
+				}
+			}
+			#Ai wont give away traditional swords
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = ice }
+				FROM = { dynasty = 59 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = longclaw }
+				FROM = { dynasty = 102 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = blackfyre }
+				OR = {
+					FROM = { dynasty = 57 }
+					FROM = { #targs may give away under some circumstances
+						dynasty = 496
+						OR = {
+							trait = honorable
+							NOT = { trait = arbitrary }
+							NOT = { trait = lunatic }
+							ROOT = { NOT = { martial = 15 } }
+						}	
+					}
+				}	
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = brightroar }
+				FROM = { dynasty = 190 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = heartsbane }
+				FROM = { dynasty = 296 }
+			}
+			modifier = {  #targs will only give this to great warriors
+				factor = 0
+				FROMFROM = { artifact_type = darksister }
+				FROM = { dynasty = 496 }
+				OR = {
+					NOT = { is_close_relative = FROM }
+					NOT = {
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+					any_artifact = { has_artifact_flag = valyrian_steel }
+					FROM = {
+						has_character_flag = given_darksister
+						NOT = { has_artifact = blackfyre }
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+				}
+			}
+			modifier = {  #corbrays will only give this to great warriors
+				factor = 0
+				FROMFROM = { artifact_type = ladyforlorn }
+				FROM = { dynasty = 176 }
+				OR = {
+					NOT = { is_close_relative = FROM }
+					NOT = {
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+					FROM = {
+						has_character_flag = given_ladyforlorn
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+				}
+			}
+			modifier = {  #custom dynastic swords will only be given to great dynastic warriors
+				factor = 0
+				FROMFROM = { has_artifact_flag = flag_dynastic_sword }
+				event_target:target_dynasty_sword_creator = { dynasty = FROM }
+				OR = {
+					NOT = { is_close_relative = FROM }
+					NOT = {
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+					FROM = {
+						has_character_flag = given_dynastic_sword
+						OR = {
+							trait = skilled_warrior
+							trait = master_warrior
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = redrain }
+				FROM = { 
+					OR = {
+						dynasty = 121
+						dynasty = 197
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = widowswail }
+				FROM = { 
+					OR = {
+						dynasty = 190
+						dynasty = 59
+					}
+					NOT = { has_artifact = brightroar }
+				}
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = oathkeeper }
+				FROM = { 
+					OR = {
+						dynasty = 190
+						dynasty = 59
+					}
+					NOT = { has_artifact = brightroar }
+				}
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = crabspincer }
+				FROM = { dynasty = 50 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = vigilance }
+				FROM = { dynasty = 285 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = orphan_maker }
+				FROM = { dynasty = 247 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = truth }
+				FROM = { dynasty = 55999 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = lamentation }
+				FROM = { dynasty = 187 }
+			}
+			modifier = {
+				factor = 0
+				FROMFROM = { artifact_type = poison }
+				FROM = { dynasty = 982375 }
+			}
+			
+			modifier = {
+				factor = 2
+				is_primary_heir = yes
+			}
+			modifier = {
+				factor = 0.2
+				is_female = yes
+			}
+			modifier = {
+				factor = 0.2
+				trait = bastard
+			}
+			modifier = {
+				factor = 1.5
+				trait = trained_warrior
+			}
+			modifier = {
+				factor = 2.5
+				trait = skilled_warrior
+			}
+			modifier = {
+				factor = 4
+				trait = master_warrior
+			}
+		}
+	}
+	
+	demand_return_of_valyrian_steel = {
+		ai_target_filter = all
+		filter = all
+		only_playable = yes
+		
+		from_potential = {
+			OR = { #Ai restrictions
+				ai = no
+				AND = {
+					war = no
+					has_regent = no
+				}
+			}		
+			NOT = { trait = nightswatch } 
+			NOT = { trait = kingsguard } 
+			NOT = { culture_group = unoccupied_group }
+			NOT = { culture_group = winter_group }
+		}
+		potential = {										
+			is_ruler = yes
+			OR = {
+				independent = yes
+				same_liege = FROM
+				is_liege_of = FROM
+				is_liege_or_above = FROM
+			}		
+			NOT = { culture_group = unoccupied_group } 
+			NOT = { culture_group = winter_group }
+			FROM = { #Ai restrictions
+				OR = {
+					ai = no
+					trait = ruthless
+					trait = lunatic
+					AND = {
+						NOT = { opinion = { who = ROOT value = 30 } }
+						NOT = { has_non_aggression_pact_with = ROOT }
+					}	
+				}
+			}
+			OR = {
+				any_artifact = {
+					OR = {
+						has_artifact_flag = valyrian_steel 
+						has_artifact_flag = valyrian_armour 
+					}
+					OR = {
+						has_artifact_flag = stolen_from_@FROM
+						AND = {
+							ROOT_FROM = { NOT = { dynasty = ROOT } }
+							OR = {
+								AND = {
+									artifact_type = ice
+									FROM = { dynasty = 59 } #Stark 
+								}
+								AND = {
+									OR = {
+										artifact_type = longclaw_snow
+										artifact_type = longclaw
+									}	
+									FROM = { dynasty = 102 }  
+								}
+								AND = {
+									artifact_type = blackfyre
+									FROM = { 
+										OR = {
+											dynasty = 496
+											dynasty = 57
+										}
+									}
+								}
+								AND = {
+									artifact_type = darksister
+									FROM = { dynasty = 496 }
+								}
+								AND = {
+									artifact_type = brightroar
+									FROM = { dynasty = 190 } 
+								}
+								AND = {
+									OR = {
+										artifact_type = widowswail
+										artifact_type = oathkeeper
+									}
+									FROM = { 
+										OR = {
+											dynasty = 190
+											dynasty = 59
+										}
+									}
+								}
+								AND = {
+									artifact_type = heartsbane
+									FROM = { dynasty = 296 } 
+								}
+								AND = {
+									artifact_type = nightfall
+									FROM = { dynasty = 122 } 
+								}
+								AND = {
+									artifact_type = ladyforlorn
+									FROM = { dynasty = 176 }
+								}
+								AND = {
+									artifact_type = redrain
+									FROM = { 
+										OR = {
+											dynasty = 121
+											dynasty = 197
+										}
+									} 
+								}
+								AND = {
+									artifact_type = crabspincer
+									FROM = { dynasty = 50 } 
+								}
+								AND = {
+									artifact_type = vigilance
+									FROM = { dynasty = 285 } 
+								}
+								AND = {
+									artifact_type = orphan_maker
+									FROM = { dynasty = 247 }
+								}
+								AND = {
+									artifact_type = truth
+									FROM = { dynasty = 55999 } 
+								}
+								AND = {
+									artifact_type = lamentation
+									FROM = { dynasty = 187 }
+								}
+								AND = {
+									artifact_type = poison
+									FROM = { dynasty = 982375 } 
+								}
+								AND = {
+									has_artifact_flag = flag_dynastic_sword
+									event_target:target_dynasty_sword_creator = { dynasty = FROM } 
+								}
+							}
+						}
+					}
+				}
+				any_realm_character = {
+					NAND = { #vassals not responsible for sub-vassals
+						is_ruler = yes
+						is_liege_or_above = FROM
+					}
+					any_artifact = {
+						OR = {
+							has_artifact_flag = valyrian_steel 
+							has_artifact_flag = valyrian_armour 
+						}
+						OR = {
+							has_artifact_flag = stolen_from_@FROM
+							AND = {
+								ROOT_FROM = { NOT = { dynasty = PREVPREV } }
+								OR = {
+									AND = {
+										artifact_type = ice
+										FROM = { dynasty = 59 } #Stark 
+									}
+									AND = {
+										OR = {
+											artifact_type = longclaw_snow
+											artifact_type = longclaw
+										}	
+										FROM = { dynasty = 102 }  
+									}
+									AND = {
+										artifact_type = blackfyre
+										FROM = { 
+											OR = {
+												dynasty = 496
+												dynasty = 57
+											}
+										}
+									}
+									AND = {
+										artifact_type = darksister
+										FROM = { dynasty = 496 }
+									}
+									AND = {
+										artifact_type = brightroar
+										FROM = { dynasty = 190 } 
+									}
+									AND = {
+										OR = {
+											artifact_type = widowswail
+											artifact_type = oathkeeper
+										}
+										FROM = { 
+											OR = {
+												dynasty = 190
+												dynasty = 59
+											}
+										}
+									}
+									AND = {
+										artifact_type = heartsbane
+										FROM = { dynasty = 296 } 
+									}
+									AND = {
+										artifact_type = nightfall
+										FROM = { dynasty = 122 } 
+									}
+									AND = {
+										artifact_type = ladyforlorn
+										FROM = { dynasty = 176 }
+									}
+									AND = {
+										artifact_type = redrain
+										FROM = { 
+											OR = {
+												dynasty = 121
+												dynasty = 197
+											}
+										} 
+									}
+									AND = {
+										artifact_type = crabspincer
+										FROM = { dynasty = 50 } 
+									}
+									AND = {
+										artifact_type = vigilance
+										FROM = { dynasty = 285 } 
+									}
+									AND = {
+										artifact_type = orphan_maker
+										FROM = { dynasty = 247 }
+									}
+									AND = {
+										artifact_type = truth
+										FROM = { dynasty = 55999 } 
+									}
+									AND = {
+										artifact_type = lamentation
+										FROM = { dynasty = 187 }
+									}
+									AND = {
+										artifact_type = poison
+										FROM = { dynasty = 982375 } 
+									}
+									AND = {
+										has_artifact_flag = flag_dynastic_sword
+										event_target:target_dynasty_sword_creator = { dynasty = FROM } 
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			NOT = { character = FROM }
+		}
+		allow = {
+			show_only_failed_conditions = yes
+			FROM = {
+				NOT = { war_with = ROOT }
+				custom_tooltip = {
+					text = TOOLTIPNOTANYLIEGEWARS
+					hidden_tooltip = {
+						NOT = { any_liege = { war_with = ROOT } }
+					}	
+				}
+				NOT = { has_non_aggression_pact_with = ROOT }
+				NOT = { trait = kingsguard }	
+				OR = {
+					ROOT = { trait = wildling }
+					NOT = { trait = nightswatch }
+				}				
+			}		
+			conditional_tooltip = { #jogos nhai do not make war on eachother
+				trigger = { FROM = { religion = jogos_pagan } }
+				custom_tooltip = {
+					text = TOOLTIPJOGOSWARPROHIBITION
+					hidden_tooltip = { NOT = { ROOT = { religion = jogos_pagan } } }
+				}
+			}
+			OR = { #Cannot attack vassals split by mega war
+				NOT = { has_opinion_modifier = { who = FROM modifier = opinion_de_facto_liege } }
+				NOT = { FROM = { higher_tier_than = ROOT } }
+			}	
+			is_within_diplo_range = FROM
+			NOT = { has_opinion_modifier = { who = FROM modifier = opinion_demanded_valyrian_steel } }
+			
+		}
+		effect = {
+			opinion = {
+				who = FROM
+				modifier = opinion_demanded_valyrian_steel
+				months = 60
+			}
+			letter_event = { id = valyrian_steel.170 tooltip = TOOLTIPvalyrian_steel.170 days = 1 }
+			any_artifact = {
+				limit = {
+					OR = {
+						has_artifact_flag = valyrian_steel 
+						has_artifact_flag = valyrian_armour 
+					}
+					OR = {
+						has_artifact_flag = stolen_from_@FROM
+						AND = {
+							ROOT_FROM = { NOT = { dynasty = ROOT } }
+							OR = {
+								AND = {
+									artifact_type = ice
+									FROM = { dynasty = 59 } #Stark 
+								}
+								AND = {
+									OR = {
+										artifact_type = longclaw_snow
+										artifact_type = longclaw
+									}	
+									FROM = { dynasty = 102 }  
+								}
+								AND = {
+									artifact_type = blackfyre
+									FROM = { 
+										OR = {
+											dynasty = 496
+											dynasty = 57
+										}
+									}
+								}
+								AND = {
+									artifact_type = darksister
+									FROM = { dynasty = 496 }
+								}
+								AND = {
+									artifact_type = brightroar
+									FROM = { dynasty = 190 } 
+								}
+								AND = {
+									OR = {
+										artifact_type = widowswail
+										artifact_type = oathkeeper
+									}
+									FROM = { 
+										OR = {
+											dynasty = 190
+											dynasty = 59
+										}
+									}
+								}
+								AND = {
+									artifact_type = heartsbane
+									FROM = { dynasty = 296 } 
+								}
+								AND = {
+									artifact_type = nightfall
+									FROM = { dynasty = 122 } 
+								}
+								AND = {
+									artifact_type = ladyforlorn
+									FROM = { dynasty = 176 }
+								}
+								AND = {
+									artifact_type = redrain
+									FROM = { 
+										OR = {
+											dynasty = 121
+											dynasty = 197
+										}
+									} 
+								}
+								AND = {
+									artifact_type = crabspincer
+									FROM = { dynasty = 50 } 
+								}
+								AND = {
+									artifact_type = vigilance
+									FROM = { dynasty = 285 } 
+								}
+								AND = {
+									artifact_type = orphan_maker
+									FROM = { dynasty = 247 }
+								}
+								AND = {
+									artifact_type = truth
+									FROM = { dynasty = 55999 } 
+								}
+								AND = {
+									artifact_type = lamentation
+									FROM = { dynasty = 187 }
+								}
+								AND = {
+									artifact_type = poison
+									FROM = { dynasty = 982375 } 
+								}
+								AND = {
+									has_artifact_flag = flag_dynastic_sword
+									event_target:target_dynasty_sword_creator = { dynasty = FROM } 
+								}
+							}
+						}
+					}
+				}
+				owner = { set_character_flag = demanded_valyrian_steel }
+				custom_tooltip = { text = TOOLTIPdemand_return_of_valyrian_steel }
+			}
+			any_realm_character = {
+				limit = {
+					NAND = { #vassals not responsible for sub-vassals
+						is_ruler = yes
+						is_liege_or_above = ROOT_FROM
+					}
+				}
+				any_artifact = {
+					limit = {
+						OR = {
+							has_artifact_flag = valyrian_steel 
+							has_artifact_flag = valyrian_armour 
+						}
+						OR = {
+							has_artifact_flag = stolen_from_@FROM
+							AND = {
+								ROOT_FROM = { NOT = { dynasty = ROOT } }
+								OR = {
+									AND = {
+										artifact_type = ice
+										FROM = { dynasty = 59 } #Stark 
+									}
+									AND = {
+										OR = {
+											artifact_type = longclaw_snow
+											artifact_type = longclaw
+										}	
+										FROM = { dynasty = 102 }  
+									}
+									AND = {
+										artifact_type = blackfyre
+										FROM = { 
+											OR = {
+												dynasty = 496
+												dynasty = 57
+											}
+										}
+									}
+									AND = {
+										artifact_type = darksister
+										FROM = { dynasty = 496 }
+									}
+									AND = {
+										artifact_type = brightroar
+										FROM = { dynasty = 190 } 
+									}
+									AND = {
+										OR = {
+											artifact_type = widowswail
+											artifact_type = oathkeeper
+										}
+										FROM = { 
+											OR = {
+												dynasty = 190
+												dynasty = 59
+											}
+										}
+									}
+									AND = {
+										artifact_type = heartsbane
+										FROM = { dynasty = 296 } 
+									}
+									AND = {
+										artifact_type = nightfall
+										FROM = { dynasty = 122 } 
+									}
+									AND = {
+										artifact_type = ladyforlorn
+										FROM = { dynasty = 176 }
+									}
+									AND = {
+										artifact_type = redrain
+										FROM = { 
+											OR = {
+												dynasty = 121
+												dynasty = 197
+											}
+										} 
+									}
+									AND = {
+										artifact_type = crabspincer
+										FROM = { dynasty = 50 } 
+									}
+									AND = {
+										artifact_type = vigilance
+										FROM = { dynasty = 285 } 
+									}
+									AND = {
+										artifact_type = orphan_maker
+										FROM = { dynasty = 247 }
+									}
+									AND = {
+										artifact_type = truth
+										FROM = { dynasty = 55999 } 
+									}
+									AND = {
+										artifact_type = lamentation
+										FROM = { dynasty = 187 }
+									}
+									AND = {
+										artifact_type = poison
+										FROM = { dynasty = 982375 } 
+									}
+									AND = {
+										has_artifact_flag = flag_dynastic_sword
+										event_target:target_dynasty_sword_creator = { dynasty = FROM } 
+									}
+								}
+							}
+						}
+					}
+					owner = { set_character_flag = demanded_valyrian_steel }
+					custom_tooltip = { text = TOOLTIPdemand_return_of_valyrian_steel }
+				}
+			}
+		}
+		ai_check_interval = 36
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.05
+			}
+			modifier = {
+				factor = 4
+				NOT = { relative_power = { who = FROM power = 0.5 } }
+			}
+			modifier = {
+				factor = 2
+				NOT = { relative_power = { who = FROM power = 1 } }
+			}
+			modifier = {
+				factor = 0.5
+				relative_power = { who = FROM power = 2 }
+			}
+			modifier = {
+				factor = 2
+				FROM = { trait = dragon_rider }
+				NOT = { trait = dragon_rider }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { NOT = { trait = dragon_rider } }
+				trait = dragon_rider
+			}
+			
+			modifier = {
+				factor = 2
+				FROM = { trait = wroth }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { trait = patient }
+			}
+			modifier = {
+				factor = 2
+				FROM = { trait = proud }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { trait = humble }
+			}
+			modifier = {
+				factor = 2
+				FROM = { trait = diligent }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { trait = slothful }
+			}
+			modifier = {
+				factor = 4
+				FROM = { trait = ambitious }
+			}
+			modifier = {
+				factor = 0.25
+				FROM = { trait = content }
+			}
+			modifier = {
+				factor = 2
+				FROM = { trait = brave }
+			}
+			modifier = {
+				factor = 0.5
+				FROM = { trait = craven }
+			}
+			modifier = {
+				factor = 2
+				FROM = { trait = zealous }
+				NOT = { religion = FROM }
+			}
+		}
+	}
+}
+decisions = {
+	claim_dawn = {
+		potential = {
+			dynasty = 16
+			OR = {
+				trait = master_warrior
+				ai = no
+			}		
+			age = 16
+			OR = {
+				trait = knight #to reduce decision spam, want to allow any dayne, not just landed ones.
+				dynasty_head = { NOT = { religion = the_seven } }
+			}	
+			NOT = { has_artifact = dawn }
+			NOT = { 
+				any_character = {
+					is_alive = yes
+					has_artifact = dawn
+				}
+			}
+		}
+		allow = {
+			trait = master_warrior
+			OR = {
+				trait = knight
+				NOT = { religion = the_seven }
+			}	
+			custom_tooltip = {
+				text = TOOLTIP_claim_dawn_calc
+				hidden_tooltip = {
+					calc_true_if = {
+						amount = 2
+						trait = just
+						trait = kind
+						trait = brave
+						trait = diligent
+						trait = honorable
+						trait = patient
+						trait = zealous
+					}
+				}
+			}
+			NOT = { trait = infirm }
+			NOT = { trait = incapable }
+			NOT = { trait = cruel }
+			NOT = { trait = deceitful }
+			NOT = { trait = drunkard }
+			NOT = { trait = impaler }
+			NOT = { trait = gluttonous }
+			NOT = { trait = greedy }
+			NOT = { trait = slothful }
+			NOT = { trait = craven }
+			NOT = { trait = arbitrary }
+			NOT = { trait = ruthless }
+			NOT = { trait = dwarf }
+			NOT = { is_weak_trigger = yes }
+			custom_tooltip = {
+				text = "TOOLTIPclaim_dawn_dishonorable"
+				hidden_tooltip = {
+					NOT = { trait = dishonorable1 }
+					NOT = { trait = dishonorable2 }
+					NOT = { trait = dishonorable3 }
+					NOT = { trait = dishonorable4 }
+					NOT = { trait = dishonorable5 }
+					NOT = { trait = dishonorable6 }
+					NOT = { trait = dishonorable7 }
+					NOT = { trait = dishonorable8 }
+					NOT = { trait = dishonorable9 }
+					NOT = { trait = dishonorable10 }
+				}
+			}
+		}
+		effect = {
+			add_artifact = dawn
+			give_nickname = nick_the_sword_of_the_morning
+			hidden_tooltip = {
+				character_event = { id = valyrian_steel.150 }
+				any_playable_ruler = {
+					limit = { 
+						ai = no 
+						NOT = { character = ROOT }
+						OR = {
+							dynasty = ROOT
+							is_close_relative = ROOT
+							same_realm = ROOT
+							culture_group = ROOT
+							religion_group = ROOT
+						}
+					}
+					character_event = { id = valyrian_steel.151 } #ya im lazy
+				}
+			}	
+		}
+		ai_check_interval = 12
+		ai_will_do = { factor = 100 }
+	}
+	reforge_valyrian_steel = {
+		ai = no
+		potential = {
+			ai = no
+			has_artifact = valyrian_steel
+			# Probably should let players reforge the sword even it was renamed.
+			# any_artifact = {
+				# artifact_type = valyrian_steel
+				# NOT = { has_artifact_flag = flag_named_sword }
+			# }
+			NOT = { has_character_flag = reforge_valyrian_steel }
+		}
+		allow = {
+			wealth = 100
+			has_artifact = valyrian_steel
+		}			
+		effect = {
+			wealth = -100
+			character_event = { id = 250285 }
+			set_character_flag = reforge_valyrian_steel
+		}
+	}
+	
+	forge_valyrian_steel = {
+		only_playable = yes
+		is_high_prio = yes
+		potential = {
+			NOT = { start_date = 7886.1.1 } #Pre-Doom Only
+			culture_group = valyrian
+		}
+		allow = {
+			wealth = 400
+			trait = dragon_rider
+			custom_tooltip = {
+				text = TOOLTIPforge_valyrian_steel_STORMSINGER
+				hidden_tooltip = {
+					any_courtier = {
+						religion = valyrian_rel
+						learning = 15
+						liege = { character = ROOT }
+						prisoner = no
+						is_incapable = no
+						is_inaccessible_trigger = no
+					}
+				}				
+			}
+			custom_tooltip = {
+				text = TOOLTIPforge_valyrian_steel_VALYRIA
+				hidden_tooltip = {
+					any_demesne_province = {
+						region = world_valyria
+					}
+				}				
+			}
+			custom_tooltip = {
+				text = TOOLTIPforge_valyrian_steel_FORGING
+				hidden_tooltip = {
+					NOT = { has_character_flag = forging_valyrian_steel }
+				}				
+			}
+		}			
+		effect = {
+			wealth = -400
+			character_event = { id = valyrian_steel.190 }
+			set_character_flag = forging_valyrian_steel
+		}
+		ai_check_interval = 6
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.1
+			}
+			modifier = {
+				factor = 0.1
+				any_artifact = { has_artifact_flag = valyrian_steel }	
+			}
+			modifier = {
+				factor = 0
+				war = yes	
+			}
+			modifier = {
+				factor = 0
+				has_character_modifier = loan_timer
+				OR = {
+					stewardship = 9
+					trait = temperate
+					NOT = { 
+						OR = {
+							trait = gluttonous 
+							trait = hedonist
+							trait = slothful
+						}	
+					}	
+				}	
+			}	
+			modifier = {
+				factor = 0.05
+				OR = {
+					trait = content
+					trait = temperate
+				}	
+			}	
+			modifier = {
+				factor = 5
+				OR = {
+					trait = ambitious
+					trait = greedy
+					trait = gluttonous 
+					trait = envious
+				}	
+			}
+		}
+	}
+}

@@ -1,0 +1,471 @@
+#reclaim_ancestral_sword
+
+reclaim_ancestral_sword = {
+	name = CB_NAME_RECLAIM_SWORD
+	war_name = WAR_NAME_RECLAIM_SWORD
+	sprite = 12
+	truce_days = 3650
+	
+	defender_unoccupied_warscore = yes
+	att_ticking_war_score_multiplier = 5.0
+	def_ticking_war_score_multiplier = 5.0
+	max_attacker_battle_score = 90
+	
+	infamy_modifier = 0
+	
+	can_use_gui = {
+		# custom_tooltip = {
+			# text = TOOLTIPCBENFORCEDTRUCE
+			# hidden_tooltip = {
+				# FROM = {
+					# NOT = { has_opinion_modifier = { who = ROOT modifier = opinion_enforced_truce } }
+				# }	
+			# }
+		# }
+	}
+
+	can_use = {
+	}
+
+	is_valid = {
+		OR = { #Cannot attack vassals split by mega war
+			NOT = { FROM = { has_opinion_modifier = { who = ROOT modifier = opinion_de_facto_liege } } }
+			NOT = { ROOT = { higher_tier_than = FROM } }
+		}	
+	}
+	
+	on_add = { #Surrender Demand
+		event_target:chronicle_player = {
+			if = {
+				limit = { character = ROOT }
+				chronicle = {
+					entry = CHRONICLE_WAR_SWORD_ATTACKER
+					portrait = [From.GetID]
+				}
+				break = yes
+			}
+			if = {
+				limit = { character = FROM }
+				chronicle = {
+					entry = CHRONICLE_WAR_SWORD_DEFENDER
+					portrait = [Root.GetID]
+				}
+				break = yes
+			}
+			if = {
+				limit = { is_liege_or_above = ROOT }
+				chronicle = {
+					entry = CHRONICLE_WAR_SWORD_ATTACKER_LIEGE
+					portrait = [Root.GetID]
+				}
+				break = yes
+			}
+			if = {
+				limit = { is_liege_or_above = FROM }
+				chronicle = {
+					entry = CHRONICLE_WAR_SWORD_DEFENDER_LIEGE
+					portrait = [From.GetID]
+				}
+			}
+		}
+	}
+
+	on_success = {
+		hidden_tooltip = { ROOT = { add_character_modifier = { name = victory_timer duration = 3 } } }
+		FROM = {
+			any_artifact = {
+				limit = {
+					OR = {
+						has_artifact_flag = valyrian_steel 
+						has_artifact_flag = valyrian_armour 
+					}
+					OR = {
+						has_artifact_flag = stolen_from_@ROOT
+						AND = {
+							ROOT = { NOT = { dynasty = ROOT_FROM } }
+							OR = {
+								AND = {
+									artifact_type = ice
+									ROOT = { dynasty = 59 } #Stark 
+								}
+								AND = {
+									OR = {
+										artifact_type = longclaw_snow
+										artifact_type = longclaw
+									}	
+									ROOT = { dynasty = 102 }  
+								}
+								AND = {
+									artifact_type = blackfyre
+									ROOT = { 
+										OR = {
+											dynasty = 496
+											dynasty = 57
+										}
+									}
+								}
+								AND = {
+									artifact_type = darksister
+									ROOT = { dynasty = 496 }
+								}
+								AND = {
+									artifact_type = brightroar
+									ROOT = { dynasty = 190 } 
+								}
+								AND = {
+									OR = {
+										artifact_type = widowswail
+										artifact_type = oathkeeper
+									}
+									ROOT = { 
+										OR = {
+											dynasty = 190
+											dynasty = 59
+										}
+									}
+								}
+								AND = {
+									artifact_type = heartsbane
+									ROOT = { dynasty = 296 } 
+								}
+								AND = {
+									artifact_type = nightfall
+									ROOT = { dynasty = 122 } 
+								}
+								AND = {
+									artifact_type = ladyforlorn
+									ROOT = { dynasty = 176 }
+								}
+								AND = {
+									artifact_type = redrain
+									ROOT = { 
+										OR = {
+											dynasty = 121
+											dynasty = 197
+										}
+									} 
+								}
+								AND = {
+									artifact_type = crabspincer
+									ROOT = { dynasty = 50 } 
+								}
+								AND = {
+									artifact_type = vigilance
+									ROOT = { dynasty = 285 } 
+								}
+								AND = {
+									artifact_type = orphan_maker
+									ROOT = { dynasty = 247 }
+								}
+								AND = {
+									artifact_type = truth
+									ROOT = { dynasty = 55999 } 
+								}
+								AND = {
+									artifact_type = lamentation
+									ROOT = { dynasty = 187 }
+								}
+								AND = {
+									artifact_type = poison
+									ROOT = { dynasty = 982375 } 
+								}
+								AND = {
+									has_artifact_flag = flag_dynastic_sword
+									event_target:target_dynasty_sword_creator = { dynasty = ROOT } 
+								}
+							}
+						}
+					}
+				}
+				hidden_tooltip = { 
+					owner = { 
+						add_trait = held_important_artifact 
+						opinion = {
+							who = ROOT
+							modifier = opinion_stole_sword
+							years = 100
+						}
+						if = {
+							limit = { NOT = { character = ROOT_FROM } }
+							prestige = -100
+						}
+					} 
+				}
+				if = { #reforge to ice
+					limit = { 
+						OR = {
+							artifact_type = widowswail
+							artifact_type = oathkeeper 
+						}	
+						ROOT = { dynasty = 59 }
+						NOT = { any_character = { is_alive = yes has_artifact = ice } }
+					}	
+					unsafe_destroy_artifact = yes
+					ROOT = { 
+						add_artifact = ice 
+						new_artifact = { set_artifact_flag = stolen_from_@PREVPREVPREV }
+					}
+				}
+				else = {
+					set_artifact_flag = stolen_from_@PREV
+					set_artifact_flag = previous_holder_@PREV
+					clr_artifact_flag = stolen_from_@ROOT
+					transfer_artifact = { from = PREV to = ROOT } 
+				}
+			}	
+			any_realm_character = {
+				any_artifact = {
+					limit = {
+						OR = {
+							has_artifact_flag = valyrian_steel 
+							has_artifact_flag = valyrian_armour 
+						}
+						OR = {
+							has_artifact_flag = stolen_from_@ROOT
+							AND = {
+								ROOT = { NOT = { dynasty = PREVPREV } }
+								OR = {
+									AND = {
+										artifact_type = ice
+										ROOT = { dynasty = 59 } #Stark 
+									}
+									AND = {
+										OR = {
+											artifact_type = longclaw_snow
+											artifact_type = longclaw
+										}	
+										ROOT = { dynasty = 102 }  
+									}
+									AND = {
+										artifact_type = blackfyre
+										ROOT = { 
+											OR = {
+												dynasty = 496
+												dynasty = 57
+											}
+										}
+									}
+									AND = {
+										artifact_type = darksister
+										ROOT = { dynasty = 496 }
+									}
+									AND = {
+										artifact_type = brightroar
+										ROOT = { dynasty = 190 } 
+									}
+									AND = {
+										OR = {
+											artifact_type = widowswail
+											artifact_type = oathkeeper
+										}
+										ROOT = { 
+											OR = {
+												dynasty = 190
+												dynasty = 59
+											}
+										}
+									}
+									AND = {
+										artifact_type = heartsbane
+										ROOT = { dynasty = 296 } 
+									}
+									AND = {
+										artifact_type = nightfall
+										ROOT = { dynasty = 122 } 
+									}
+									AND = {
+										artifact_type = ladyforlorn
+										ROOT = { dynasty = 176 }
+									}
+									AND = {
+										artifact_type = redrain
+										ROOT = { 
+											OR = {
+												dynasty = 121
+												dynasty = 197
+											}
+										} 
+									}
+									AND = {
+										artifact_type = crabspincer
+										ROOT = { dynasty = 50 } 
+									}
+									AND = {
+										artifact_type = vigilance
+										ROOT = { dynasty = 285 } 
+									}
+									AND = {
+										artifact_type = orphan_maker
+										ROOT = { dynasty = 247 }
+									}
+									AND = {
+										artifact_type = truth
+										ROOT = { dynasty = 55999 } 
+									}
+									AND = {
+										artifact_type = lamentation
+										ROOT = { dynasty = 187 }
+									}
+									AND = {
+										artifact_type = poison
+										ROOT = { dynasty = 982375 } 
+									}
+									AND = {
+										has_artifact_flag = flag_dynastic_sword
+										event_target:target_dynasty_sword_creator = { dynasty = ROOT } 
+									}
+								}
+							}
+						}
+					}
+					hidden_tooltip = { 
+						owner = { 
+							add_trait = held_important_artifact 
+							opinion = {
+								who = ROOT
+								modifier = opinion_stole_sword
+								years = 100
+							}
+							if = {
+								limit = { NOT = { character = ROOT_FROM } }
+								prestige = -100
+							}
+						} 
+					}
+					if = { #reforge to ice
+						limit = { 
+							OR = {
+								artifact_type = widowswail
+								artifact_type = oathkeeper 
+							}	
+							ROOT = { dynasty = 59 }
+							NOT = { any_character = { is_alive = yes has_artifact = ice } }
+						}	
+						unsafe_destroy_artifact = yes
+						ROOT = { 
+							add_artifact = ice 
+							new_artifact = { set_artifact_flag = stolen_from_@PREVPREVPREV }
+						}
+					}
+					else = {
+						set_artifact_flag = stolen_from_@PREV
+						set_artifact_flag = previous_holder_@PREV
+						clr_artifact_flag = stolen_from_@ROOT
+						transfer_artifact = { from = PREV to = ROOT } 
+					}
+				}
+			}
+		}		
+		ROOT = {
+			participation_scaled_prestige = 100
+		}
+		any_attacker = {
+			limit = { NOT = { character = ROOT } }
+			hidden_tooltip = { participation_scaled_prestige = 100 }
+		}
+		FROM = {
+			prestige = -100
+		}
+		hidden_tooltip = {
+			if = {
+				limit = { 
+					ROOT = { tier = EMPEROR }
+				}
+				any_defender = {
+					diplomatic_immunity = yes
+					character_event = { id = mega_wars.74 days = 1 } #king can revoke titles of LPs and non direct vassals
+					character_event = { id = trial.500 days = 4 } #diplomatic immunity failsafe
+				}
+			}
+		}
+	}
+
+	on_fail = {
+		ROOT = {
+			prestige = -100
+		}
+		FROM = {
+			participation_scaled_prestige = 100
+		}
+		any_defender = {
+			limit = { NOT = { character = FROM } }
+			hidden_tooltip = { participation_scaled_prestige = 100 }
+		}
+	}
+
+	on_reverse_demand = {
+		hidden_tooltip = { 
+			FROM = { 
+				add_character_modifier = { name = victory_timer duration = 3 }
+				if = {
+					limit = {
+						ROOT = {
+							OR = {
+								vassal_of = ROOT_FROM
+								liege_before_war = { character = ROOT_FROM }
+							}							
+							OR = {
+								higher_tier_than = DUKE
+								relative_power_including_allies_attacker = { who = PREV power = 0.3 } 
+							}
+						}
+					}
+					change_variable = { which = fear_actions value = 10 } 
+					remove_character_modifier = defeated_major_revolt
+					add_character_modifier = { name = defeated_major_revolt duration = 3650 }
+				}				
+			} 
+		} 
+		ROOT = {
+			prestige = -150
+			transfer_scaled_wealth = {
+				to = FROM
+				value = 4.0
+			}
+		}
+		FROM = {
+			participation_scaled_prestige = 150
+		}
+		any_defender = {
+			limit = { NOT = { character = FROM } }
+			hidden_tooltip = { participation_scaled_prestige = 150 }
+		}
+		hidden_tooltip = {
+			mega_war_emperor_rebels_resolution_effect = yes
+		}
+	}
+
+	attacker_ai_victory_worth = {
+		factor = -1 # always accept
+	}
+	
+	attacker_ai_defeat_worth = {
+		factor = 150
+	}
+
+	defender_ai_victory_worth = {
+		factor = -1 # always accept
+	}
+	
+	defender_ai_defeat_worth = {
+		factor = 100
+	}
+	
+	# ai importance placed on this CB: scope is the targeted title, ROOT is the attacking character, FROM is the defending character
+	ai_will_do = { 
+		factor = 0.75 #Less important than other CBs
+		#Dragon intimidation
+		modifier = {
+			factor = 0
+			ROOT = { 
+				NOT = { trait = dragon_rider } 
+				NOT = { relative_power = { who = FROM power = 6 } }	
+			}
+			FROM = { 
+				trait = dragon_rider 
+				any_friend = { trait = dragon martial = 60 }
+				is_incapable = no
+			}
+		}	
+	}
+}

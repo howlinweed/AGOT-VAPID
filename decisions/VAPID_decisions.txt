@@ -1,0 +1,251 @@
+targetted_decisions = {
+	toggle_artifact_naming = {
+		ai = no
+		filter = self
+		ai_filter = none
+		from_potential = {
+			ai = no
+		}
+		potential = {
+			ai = no
+			NOT = { has_character_flag = flag_vapid_manage }
+		}
+		allow = {
+			hidden_tooltip = { ai = no }
+		}
+		effect = {
+			hidden_tooltip = { #Manage VAPID
+				character_event = { id = vapid.2 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	rename_valyrian_artifact = {
+		ai = no
+		filter = all_including_me
+		ai_target_filter = none
+		third_party_filter = artifacts
+		third_party_ai_filter = none
+		third_party = ROOT
+		from_potential = {
+			ai = no
+		}
+		potential = {
+			any_artifact = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					has_artifact_flag = valyrian_armour
+					artifact_type = dragon_horn_a
+					artifact_type = dragon_horn_b
+				}
+			}
+		}
+		third_party_potential = {
+			FROMFROM = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					has_artifact_flag = valyrian_armour
+					artifact_type = dragon_horn_a
+					artifact_type = dragon_horn_b
+				}
+			}
+		}
+		allow = {
+			# any_artifact = {
+				# custom_tooltip = {
+					# text = TOOLTIPrename_valyrian_artifactTYPE
+					# hidden_tooltip = {
+						# OR = {
+							# artifact_type = valyrian_steel
+							# artifact_type = valyrian_armour
+							# artifact_type = dragon_horn_a
+							# artifact_type = dragon_horn_b
+						# }
+					# }
+				# }
+				# custom_tooltip = {
+					# text = TOOLTIPrename_valyrian_artifactCANON
+					# hidden_tooltip = {
+						# NOT = { has_artifact_flag = canon_sword }
+					# }
+				# }
+			# }
+		}
+		third_party_allow = {
+			FROMFROM = {
+				custom_tooltip = {
+					text = TOOLTIPrename_valyrian_artifactTYPE
+					hidden_tooltip = {
+						OR = {
+							has_artifact_flag = valyrian_steel
+							has_artifact_flag = valyrian_armour
+							artifact_type = dragon_horn_a
+							artifact_type = dragon_horn_b
+						}
+					}
+				}
+				conditional_tooltip = {
+					trigger = { has_artifact_flag = valyrian_steel }
+					custom_tooltip = {
+						text = TOOLTIPrename_valyrian_artifactCANON
+						hidden_tooltip = {
+							NOT = { has_artifact_flag = canon_sword }
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			custom_tooltip = {
+				text = TOOLTIPrename_valyrian_artifactEFFECT
+				FROMFROM = {
+					save_event_target_as = target_valyrian_artifact
+				}
+				character_event = { id = vapid.1599 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	declare_dynastic_sword = {
+		is_high_prio = yes
+		ai = no
+		filter = self
+		ai_target_filter = none
+		third_party_filter = artifacts
+		third_party_ai_filter = none
+		third_party = ROOT
+		potential = {
+			hidden_tooltip = { ai = no }
+			any_artifact = {
+				has_artifact_flag = valyrian_steel
+				NOT = { has_artifact_flag = flag_dynastic_sword }
+			}
+			NOR = {
+				dynasty = 496 #Targs already have a dynastic sword
+				dynasty = 176 #As do the Corbrays
+				event_target:target_dynasty_sword_creator = { always = yes } #Can't make a new one if you have one already
+			}
+		}
+		third_party_potential = {
+			FROMFROM = {
+				OR = {
+					has_artifact_flag = valyrian_steel
+					NOT = { has_artifact_flag = flag_dynastic_sword }
+				}
+			}
+		}
+		allow = {
+			FROM = { dynasty_head = { character = PREV } }
+		}
+		third_party_allow = {
+			FROMFROM = {
+				custom_tooltip = {
+					text = TOOLTIPdeclare_dynastic_swordTYPE
+					hidden_tooltip = {
+						has_artifact_flag = valyrian_steel
+						NOR = {
+							has_artifact_flag = flag_dynastic_sword
+							has_artifact_flag = canon_sword
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			custom_tooltip = {
+				text = TOOLTIPdeclare_dynastic_swordEFFECT
+				FROMFROM = {
+					save_event_target_as = target_valyrian_artifact
+					set_artifact_flag = flag_dynastic_sword
+				}
+				FROM = {
+					save_global_event_target_as = target_dynasty_sword_creator
+				}
+				narrative_event = { id = vapid.20 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	create_house_words = {
+		ai = no
+		filter = self
+		ai_target_filter = none
+		potential = {
+			hidden_tooltip = {
+				ai = no
+				NOT = { has_character_flag = creating_house_words }
+			}
+			higher_real_tier_than = COUNT
+			conditional_tooltip = {
+				trigger = { NOT = { has_house_words_trigger = yes } }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsNEW
+					hidden_tooltip = {
+						always = yes
+					}
+				}
+			}
+			conditional_tooltip = {
+				trigger = { has_house_words_trigger = yes }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsEDIT
+					hidden_tooltip = {
+						has_dynasty_flag = flag_house_words
+					}
+				}
+			}
+		}
+		allow = {
+			conditional_tooltip = {
+				trigger = { NOT = { has_house_words_trigger = yes } }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsNEW
+					hidden_tooltip = {
+						always = yes
+					}
+				}
+			}
+			conditional_tooltip = {
+				trigger = { has_house_words_trigger = yes }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsEDIT
+					hidden_tooltip = {
+						has_dynasty_flag = flag_house_words
+					}
+				}
+			}
+		}
+		effect = {
+			hidden_tooltip = {
+				set_character_flag = creating_house_words
+				c_house_words = { 
+					gain_title = ROOT
+					# set_name = [FromFrom.GetName] 
+				}
+				character_event = { id = vapid.25 days = 2 }
+				capital_scope = { province_event = { id = vapid.26 days = 3 } }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
