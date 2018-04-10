@@ -117,7 +117,7 @@ targetted_decisions = {
 		}
 	}
 	declare_dynastic_sword = {
-		is_high_prio = yes
+	declare_dynastic_sword = { #This should probably be converted into an intrigue menu decision
 		ai = no
 		filter = self
 		ai_target_filter = none
