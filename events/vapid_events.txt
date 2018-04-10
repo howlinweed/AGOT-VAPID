@@ -1,4 +1,5 @@
 #Per ~~~~~~~: make a waiting requirement before a sword can become ancestral - or - convert it from being a decision into a MTTH event
+# Can probably ditch the global_event_target and use dynamic flags and any_dynasty_member_even_if_dead to create multiple dynastic swords
 namespace = vapid
 
 character_event = { # Initialization event - fired from on_start
@@ -750,7 +751,7 @@ character_event = { #Artifact naming fired from decision
 	}
 }
 
-narrative_event = { #Used for creating a custom dynastic sword e.g. blackfyre or lady forlorn
+narrative_event = { #Used for creating a custom dynastic sword e.g. dark sister or lady forlorn
 	id = vapid.20
 	desc = EVTDESC_VAPID.20
 	title = EVTTITLE_VAPID.20
@@ -791,6 +792,230 @@ narrative_event = { #Used for creating a custom dynastic sword e.g. blackfyre or
 		hidden_tooltip = {
 			event_target:target_valyrian_artifact = { clr_artifact_flag = flag_dynastic_sword}
 			clear_global_event_target = target_dynasty_sword_creator
+		}
+	}
+}
+
+character_event = { # After x years the dynastic sword is recognized as being dynastic
+	id = vapid.21
+	hide_window = yes
+	only_playable = yes
+	only_capable = yes
+	prisoner = no
+	min_age = 15
+	#Stack at event chain start
+	#ROOT = Sword owner
+	#This = Player
+	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral (a global event_target used to link creating dynasty to ancestral sword)
+	
+	trigger = {
+		any_artifact = {
+			had_artifact_flag = {
+				flag = flag_dynastic_sword
+				days = 10950 # 30 years
+			}
+			NOT = { has_artifact_flag = flag_confirmed_dynastic }
+		}
+		event_target:target_dynasty_sword_creator = { dynasty = ROOT }
+	}
+	
+	mean_time_to_happen = {
+		years = 100
+		
+		modifier = { # Each kingdom title knocks off about 2 years
+			factor = 0.98
+			dynastic_prestige = 20
+		}
+		modifier = { # Each empire title knocks off about 5 years
+			factor = 0.95
+			dynastic_prestige = 40
+		}
+		modifier = {
+			factor = 0.98
+			dynastic_prestige = 60
+		}
+		modifier = {
+			factor = 0.95
+			dynastic_prestige = 80
+		}
+		
+		# If your family isn't respected much, who cares what you want
+		modifier = {
+			factor = 1.25
+			NOT = { dynastic_prestige = 20 }
+		}
+		modifier = {
+			factor = 1.25
+			NOT = { dynastic_prestige = 10 }
+		}
+		modifier = {
+			factor = 1.5
+			NOT = { dynastic_prestige = 5 }
+		}
+		
+		# Your own prestige helps too
+		modifier = {
+			factor =  0.98
+			prestige = 1000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 2000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 3000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 4000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 5000
+		}
+		
+		# The more family that's owned the sword, the better
+		modifier = {
+			factor = 0.85
+			any_dynasty_member_even_if_dead = {
+				count = 5
+				ROOT = {
+					any_artifact = {
+						has_artifact_flag = flag_dynastic_sword
+						previous_holder_@PREVPREV
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.75
+			any_dynasty_member_even_if_dead = {
+				count = 10
+				ROOT = {
+					any_artifact = {
+						has_artifact_flag = flag_dynastic_sword
+						previous_holder_@PREVPREV
+					}
+				}
+			}
+		}
+		
+		# Who would dare challange you?
+		modifier = {
+			factor = 0.95
+			OR = {
+				trait = master_warrior
+				trait = skilled_warrior
+			}
+		}
+		modifier = {
+			factor = 0.95
+			has_character_modifier = feared_5
+		}
+		
+		# The longer you've owned the sword, the more people will believe you
+		modifier = {
+			factor = 0.15	
+			any_artifact = {
+				had_artifact_flag = {
+					flag = flag_dynastic_sword
+					days = 45625 # 125 years
+				}
+			}
+		}
+		modifier = {
+			factor = 0.50	
+			any_artifact = {
+				had_artifact_flag = {
+					flag = flag_dynastic_sword
+					days = 54750 # 150 years
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		random_artifact = {
+			had_artifact_flag = {
+				flag = flag_dynastic_sword
+				days = 10950 # 30 years
+			}
+			save_event_target_as = target_dynastic_sword
+		}
+	}
+	
+	option = {
+		event_target:target_dynasty_sword_creator = { character_event = { id = vapid.25 } }
+	}
+}
+
+character_event = { # Ping to character who first declared the sword
+	id = vapid.22
+	hide_window = yes
+	#Stack
+	#ROOT = target_dynasty_sword_creator
+	#FROM = Sword owner
+	#This = target_dynasty_sword_creator
+	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral
+	#target_dynastic_sword = the sword in question
+	
+	trigger = {
+		dynasty = FROM
+		event_target:target_dynasty_sword_creator = { has_character_flag = previous_holder_@ROOT }
+	}
+	
+	option = {
+		FROM = { character_event = { id = vapid.23 } }
+	}
+}
+
+character_event = { # Event declaring that the sword has remained in dynastic possession long enough
+	id = vapid.23
+	is_triggered_only = yes # Triggered by event vapid.22
+	show_portait = FROM
+	picture = "GFX_evt_valyrian_steel"
+	#Stack
+	#ROOT = Sword owner
+	#FROM = target_dynasty_sword_creator
+	#FROMFROM = Sword owner
+	#This = Sword owner
+	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral
+	#target_dynastic_sword = the sword in question
+	
+	desc = {
+		trigger = { NOT = { dynasty_head = { character = ROOT } } }
+		text = EVTDESC_not_head_VAPID.23
+	}
+	desc = {
+		trigger = {dynasty_head = { character = ROOT } }
+		text = EVTDESC_head_VAPID.23
+	}
+	
+	trigger = {
+		event_target:target_dynasty_sword_creator = { character = FROM }
+	}
+	
+	immediate = {
+		event_target:target_dynastic_sword = { set_artifact_flag = flag_confirmed_dynastic }
+	}
+	
+	option = {
+		name = {
+			text = EVTOPT_dynasty_sword_VAPID.20
+			trigger = {
+				NOT = { has_house_words_trigger = yes }
+			}
+		}
+		name = {
+			text = EVTOPTGETHOUSEWORDS
+			trigger = {
+				has_house_words_trigger = yes
+			}
+		}
+		if = {
+			limit = { NOT = { dynasty_head = { character = ROOT } } }
+			dynasty_head = { tooltip = { show_portrait = yes } }
 		}
 	}
 }
@@ -867,6 +1092,206 @@ province_event = { #failsafe destroy title being used for creating custom house 
 					death = yes
 				}
 			}	
+		}
+	}
+}
+
+character_event = { # Character owns another house's dynastic sword
+	id = vapid.30
+	hide_window = yes
+	#Stack at event chain start
+	#ROOT = Sword stealer
+	#This = Sword stealer
+	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral (a global event_target used to link creating dynasty to ancestral sword)
+	
+	trigger = {
+		any_artifact = {
+			has_artifact_flag = flag_dynastic_sword
+			NOT = { has_artifact_flag = flag_confirmed_dynastic }
+		}
+		NOT = { event_target:target_dynasty_sword_creator = { dynasty = ROOT } }
+	}
+	
+	mean_time_to_happen = {
+		years = 100
+		
+		modifier = { # Each kingdom title knocks off about 2 years
+			factor = 0.98
+			dynastic_prestige = 20
+		}
+		modifier = { # Each empire title knocks off about 5 years
+			factor = 0.95
+			dynastic_prestige = 40
+		}
+		modifier = {
+			factor = 0.98
+			dynastic_prestige = 60
+		}
+		modifier = {
+			factor = 0.95
+			dynastic_prestige = 80
+		}
+		
+		# If your family isn't respected much, who cares what you want
+		modifier = {
+			factor = 1.25
+			NOT = { dynastic_prestige = 20 }
+		}
+		modifier = {
+			factor = 1.25
+			NOT = { dynastic_prestige = 10 }
+		}
+		modifier = {
+			factor = 1.5
+			NOT = { dynastic_prestige = 5 }
+		}
+		
+		# Your own prestige helps too
+		modifier = {
+			factor =  0.98
+			prestige = 1000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 2000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 3000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 4000
+		}
+		modifier = {
+			factor =  0.98
+			prestige = 5000
+		}
+		
+		# The more family that's owned the sword, the better
+		modifier = {
+			factor = 0.85
+			any_dynasty_member_even_if_dead = {
+				count = 5
+				ROOT = {
+					any_artifact = {
+						has_artifact_flag = flag_dynastic_sword
+						previous_holder_@PREVPREV
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.75
+			any_dynasty_member_even_if_dead = {
+				count = 10
+				ROOT = {
+					any_artifact = {
+						has_artifact_flag = flag_dynastic_sword
+						previous_holder_@PREVPREV
+					}
+				}
+			}
+		}
+		
+		# Who would dare challange you?
+		modifier = {
+			factor = 0.95
+			OR = {
+				trait = master_warrior
+				trait = skilled_warrior
+			}
+		}
+		modifier = {
+			factor = 0.95
+			has_character_modifier = feared_5
+		}
+		
+		# The longer you've owned the sword, the more people will believe you
+		modifier = {
+			factor = 0.15	
+			any_artifact = {
+				had_artifact_flag = {
+					flag = flag_dynastic_sword
+					days = 45625 # 125 years
+				}
+			}
+		}
+		modifier = {
+			factor = 0.50	
+			any_artifact = {
+				had_artifact_flag = {
+					flag = flag_dynastic_sword
+					days = 54750 # 150 years
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		random_artifact = {
+			has_artifact_flag = flag_dynastic_sword
+			NOT = { has_artifact_flag = flag_confirmed_dynastic }
+			save_event_target_as = target_dynastic_sword
+		}
+	}
+	
+	option = {
+		event_target:target_dynasty_sword_creator = {
+			any_dynasty_member = {
+				limit = { ai = no }
+				character_event = { id = vapid.24 }
+			}
+		}
+	}
+}
+
+character_event = { # Word is getting out that your family no longer the sword
+	id = vapid.31
+	is_triggered_only = yes # Triggered by event vapid.31
+	show_portait = FROM
+	picture = "GFX_evt_valyrian_steel"
+	#Stack
+	#ROOT = Player
+	#FROM = sword stealer
+	#This = Player
+	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral
+	#target_dynasty_sword_creator = the sword in question
+	
+	desc = {
+		trigger = { NOT = { dynasty_head = { character = ROOT } } }
+		text = EVTDESC_not_head_VAPID.31
+	}
+	desc = {
+		trigger = {dynasty_head = { character = ROOT } }
+		text = EVTDESC_head_VAPID.31
+	}
+	
+	trigger = {
+		event_target:target_dynasty_sword_creator = { dynasty = ROOT }
+	}
+	
+	immediate = {
+		# Maybe use flags to allow this event to fire multiple times 
+	}
+	
+	option = {
+		trigger
+		name = {
+			text = EVTOPT_dynasty_sword_VAPID.20
+			trigger = {
+				NOT = { has_house_words_trigger = yes }
+			}
+		}
+		name = {
+			text = EVTOPTGETHOUSEWORDS
+			trigger = {
+				has_house_words_trigger = yes
+			}
+		}
+		if = {
+			limit = { NOT = { dynasty_head = { character = ROOT } } }
+			dynasty_head = { tooltip = { show_portrait = yes } }
 		}
 	}
 }
