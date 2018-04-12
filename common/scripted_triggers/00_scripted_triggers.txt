@@ -403,7 +403,7 @@ NOT_mythical_creature_trigger = {
 			NOR = {
 				trait = dragon
 				trait = cotf
-				# trait = giant
+				trait = giant
 				trait = horse
 				trait = cat
 				culture_group = winter_group
@@ -4116,7 +4116,7 @@ can_marry_trigger = {
 				trait = septon
 				trait = has_missing
 				
-				# trait = giant
+				trait = giant
 				trait = widowed
 				trait = forbid_marriage
 				trait = ruin
@@ -4399,10 +4399,10 @@ is_divine_blood_dynasty_trigger = {
 				dynasty = 57 #Blackfyre
 				dynasty = 497 #Aegons "of Essos"
 				#Targ Cadets
-				dynasty = 45000204
-				dynasty = 45000205
-				dynasty = 45000206
-				dynasty = 45000207
+				dynasty = 450204
+				dynasty = 450205
+				dynasty = 450206
+				dynasty = 450207
 				
 				dynasty = 174419 #Codd
 				
@@ -4421,10 +4421,10 @@ high_valyrian_dynasty_trigger = {
 				dynasty = 52 #Velaryon
 				dynasty = 497 #Aegons "of Essos"
 				#Targ Cadets
-				dynasty = 45000204
-				dynasty = 45000205
-				dynasty = 45000206
-				dynasty = 45000207
+				dynasty = 450204
+				dynasty = 450205
+				dynasty = 450206
+				dynasty = 450207
 				has_dynasty_flag = high_valyrian
 			}
 		}
@@ -4442,10 +4442,10 @@ is_coin_flip_dynasty_trigger = {
 				dynasty = 7002 #Seastar - not currently used
 				dynasty = 497 #Aegons "of Essos"
 				#Targ Cadets
-				dynasty = 45000204
-				dynasty = 45000205
-				dynasty = 45000206
-				dynasty = 45000207
+				dynasty = 450204
+				dynasty = 450205
+				dynasty = 450206
+				dynasty = 450207
 				has_dynasty_flag = coin_flip_dynasty
 			}
 		}
@@ -5011,7 +5011,7 @@ has_house_words_trigger = {
 		dynasty = 9
 		dynasty = 297
 		dynasty = 178
-		dynasty = 8000178
+		dynasty = 450472
 		dynasty = 265
 		dynasty = 317
 		dynasty = 1544
@@ -5605,7 +5605,6 @@ is_volcano_location_trigger = {
 		province_id = 788 #Marahai
 		region = world_shadowlands
 		region = world_valyria
-		owner = { ai = no }
 	}
 }
 is_old_gods_religion_trigger = {
