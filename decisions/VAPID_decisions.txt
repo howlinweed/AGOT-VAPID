@@ -138,10 +138,8 @@ targetted_decisions = {
 		}
 		third_party_potential = {
 			FROMFROM = {
-				OR = {
-					has_artifact_flag = valyrian_steel
-					NOT = { has_artifact_flag = flag_dynastic_sword }
-				}
+				has_artifact_flag = valyrian_steel
+				NOT = { has_artifact_flag = flag_dynastic_sword }
 			}
 		}
 		allow = {
