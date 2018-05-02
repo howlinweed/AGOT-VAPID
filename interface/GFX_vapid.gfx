@@ -1,0 +1,4 @@
+spriteType = {
+	name = "GFX_create_house_words"
+	texturefile = "gfx\\interface\\decision_icon_create_house_words.dds"
+}

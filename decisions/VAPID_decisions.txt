@@ -1,6 +1,75 @@
+decisions = {
+	create_house_words = {
+		ai = no
+		is_high_prio = yes
+		potential = {
+			hidden_tooltip = {
+				ai = no
+				NOT = { has_character_flag = creating_house_words }
+			}
+			higher_real_tier_than = COUNT
+			conditional_tooltip = {
+				trigger = { NOT = { has_house_words_trigger = yes } }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsNEW
+					hidden_tooltip = {
+						always = yes
+					}
+				}
+			}
+			conditional_tooltip = {
+				trigger = { has_house_words_trigger = yes }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsEDIT
+					hidden_tooltip = {
+						has_dynasty_flag = flag_house_words
+					}
+				}
+			}
+		}
+		allow = {
+			conditional_tooltip = {
+				trigger = { NOT = { has_house_words_trigger = yes } }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsNEW
+					hidden_tooltip = {
+						always = yes
+					}
+				}
+			} 
+			conditional_tooltip = { # We should reconsider editing house words
+				trigger = { has_house_words_trigger = yes }
+				custom_tooltip = {
+					text = TOOLTIPcreate_house_wordsEDIT
+					hidden_tooltip = {
+						has_dynasty_flag = flag_house_words
+					}
+				}
+			}
+		}
+		effect = {
+			hidden_tooltip = {
+				set_character_flag = creating_house_words
+				c_house_words = { 
+					gain_title = ROOT
+					# set_name = [FromFrom.GetName] 
+				}
+				character_event = { id = vapid.25 days = 2 }
+				capital_scope = { province_event = { id = vapid.26 days = 3 } }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
+
 targetted_decisions = {
 	toggle_artifact_naming = {
-		ai = no
+		ai = no 
 		filter = self
 		ai_filter = none
 		from_potential = {
@@ -172,73 +241,6 @@ targetted_decisions = {
 					save_global_event_target_as = target_dynasty_sword_creator
 				}
 				narrative_event = { id = vapid.20 }
-			}
-		}
-		revoke_allowed = {
-			always = no
-		}
-		ai_will_do = {
-			factor = 0
-		}
-	}
-	create_house_words = {
-		ai = no
-		filter = self
-		ai_target_filter = none
-		potential = {
-			hidden_tooltip = {
-				ai = no
-				NOT = { has_character_flag = creating_house_words }
-			}
-			higher_real_tier_than = COUNT
-			conditional_tooltip = {
-				trigger = { NOT = { has_house_words_trigger = yes } }
-				custom_tooltip = {
-					text = TOOLTIPcreate_house_wordsNEW
-					hidden_tooltip = {
-						always = yes
-					}
-				}
-			}
-			conditional_tooltip = {
-				trigger = { has_house_words_trigger = yes }
-				custom_tooltip = {
-					text = TOOLTIPcreate_house_wordsEDIT
-					hidden_tooltip = {
-						has_dynasty_flag = flag_house_words
-					}
-				}
-			}
-		}
-		allow = {
-			conditional_tooltip = {
-				trigger = { NOT = { has_house_words_trigger = yes } }
-				custom_tooltip = {
-					text = TOOLTIPcreate_house_wordsNEW
-					hidden_tooltip = {
-						always = yes
-					}
-				}
-			}
-			conditional_tooltip = {
-				trigger = { has_house_words_trigger = yes }
-				custom_tooltip = {
-					text = TOOLTIPcreate_house_wordsEDIT
-					hidden_tooltip = {
-						has_dynasty_flag = flag_house_words
-					}
-				}
-			}
-		}
-		effect = {
-			hidden_tooltip = {
-				set_character_flag = creating_house_words
-				c_house_words = { 
-					gain_title = ROOT
-					# set_name = [FromFrom.GetName] 
-				}
-				character_event = { id = vapid.25 days = 2 }
-				capital_scope = { province_event = { id = vapid.26 days = 3 } }
 			}
 		}
 		revoke_allowed = {
