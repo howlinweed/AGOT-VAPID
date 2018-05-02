@@ -1115,117 +1115,6 @@ character_event = { # Character owns another house's dynastic sword
 	mean_time_to_happen = {
 		years = 100
 		
-		modifier = { # Each kingdom title knocks off about 2 years
-			factor = 0.98
-			dynastic_prestige = 20
-		}
-		modifier = { # Each empire title knocks off about 5 years
-			factor = 0.95
-			dynastic_prestige = 40
-		}
-		modifier = {
-			factor = 0.98
-			dynastic_prestige = 60
-		}
-		modifier = {
-			factor = 0.95
-			dynastic_prestige = 80
-		}
-		
-		# If your family isn't respected much, who cares what you want
-		modifier = {
-			factor = 1.25
-			NOT = { dynastic_prestige = 20 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { dynastic_prestige = 10 }
-		}
-		modifier = {
-			factor = 1.5
-			NOT = { dynastic_prestige = 5 }
-		}
-		
-		# Your own prestige helps too
-		modifier = {
-			factor =  0.98
-			prestige = 1000
-		}
-		modifier = {
-			factor =  0.98
-			prestige = 2000
-		}
-		modifier = {
-			factor =  0.98
-			prestige = 3000
-		}
-		modifier = {
-			factor =  0.98
-			prestige = 4000
-		}
-		modifier = {
-			factor =  0.98
-			prestige = 5000
-		}
-		
-		# The more family that's owned the sword, the better
-		modifier = {
-			factor = 0.85
-			any_dynasty_member_even_if_dead = {
-				count = 5
-				ROOT = {
-					any_artifact = {
-						has_artifact_flag = flag_dynastic_sword
-						previous_holder_@PREVPREV
-					}
-				}
-			}
-		}
-		modifier = {
-			factor = 0.75
-			any_dynasty_member_even_if_dead = {
-				count = 10
-				ROOT = {
-					any_artifact = {
-						has_artifact_flag = flag_dynastic_sword
-						previous_holder_@PREVPREV
-					}
-				}
-			}
-		}
-		
-		# Who would dare challange you?
-		modifier = {
-			factor = 0.95
-			OR = {
-				trait = master_warrior
-				trait = skilled_warrior
-			}
-		}
-		modifier = {
-			factor = 0.95
-			has_character_modifier = feared_5
-		}
-		
-		# The longer you've owned the sword, the more people will believe you
-		modifier = {
-			factor = 0.15	
-			any_artifact = {
-				had_artifact_flag = {
-					flag = flag_dynastic_sword
-					days = 45625 # 125 years
-				}
-			}
-		}
-		modifier = {
-			factor = 0.50	
-			any_artifact = {
-				had_artifact_flag = {
-					flag = flag_dynastic_sword
-					days = 54750 # 150 years
-				}
-			}
-		}
 	}
 	
 	immediate = {
@@ -1238,8 +1127,7 @@ character_event = { # Character owns another house's dynastic sword
 	
 	option = {
 		event_target:target_dynasty_sword_creator = {
-			any_dynasty_member = {
-				limit = { ai = no }
+			dynasty_head = {
 				character_event = { id = vapid.24 }
 			}
 		}
@@ -1251,24 +1139,17 @@ character_event = { # Word is getting out that your family no longer possesses t
 	is_triggered_only = yes # Triggered by event vapid.31
 	show_portait = FROM
 	picture = "GFX_evt_valyrian_steel"
+	desc = "EVTDESC_VAPID.31"
 	#Stack
-	#ROOT = Player
+	#ROOT = dynasty_head
 	#FROM = sword stealer
-	#This = Player
+	#This = dynasty_head
 	#target_dynasty_sword_creator = oroginal character that declared the sword ancestral
 	#target_dynastic_sword = the sword in question
 	
-	desc = {
-		trigger = { NOT = { dynasty_head = { character = ROOT } } }
-		text = EVTDESC_not_head_VAPID.31
-	}
-	desc = {
-		trigger = {dynasty_head = { character = ROOT } }
-		text = EVTDESC_head_VAPID.31
-	}
-	
 	trigger = {
 		event_target:target_dynasty_sword_creator = { dynasty = ROOT }
+		dynasty_head = { character = ROOT }
 	}
 	
 	immediate = {
@@ -1276,52 +1157,21 @@ character_event = { # Word is getting out that your family no longer possesses t
 	}
 	
 	option = {
-		trigger = { NOT = { dynasty_head = { character = ROOT } } }
-		name = EVTOPT_head_VAPID.31
-		prestige = -500
+		trigger = { NOT = { ai = yes } } # Player is head of his or her own dynasty
+		name = EVTOPT_VAPID.31
 		if = {
-			limit = { # You allow this cretin to possess our ancestral sword?
+			limit = { # Your family members will be upset that you lost the sword before granting it to them
 				has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
 				event_target:target_dynastic_sword = { has_artifact_flag = stolen_from_@ROOT }
 			}
-		}
-		else = {
-			any_dynasty_member = { # The loser that lost the sword
+			prestige = -500
+			any_dynasty_member = {
 				limit = {
-					event_target:target_dynastic_sword = {
-						has_artifact_flag = stolen_from_@PREV
+					NOT = { is_female = yes }
+					is_adult = yes
+					event_target:target_dynastic_sword = { # If've they lost it before, they don't have room to talk
+						NOT = { has_artifact_flag = stolen_from_@PREV }
 					}
-					has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
-				}
-				any_dynasty_member = { # Any kin that felt like they should have owned the sword will be upset that you gave it to that loser
-					limit = {
-						NOT = { is_female = yes }
-						is_adult = yes 
-						# hidden_tooltip = {
-							event_target:target_dynastic_sword = {
-								NOT = { has_character_flag = previous_holder_@PREV }
-							}
-						# }
-					}
-					opinion = {
-						who = ROOT
-						modifier = opinion_disappointed
-						months = 60
-					}
-				}
-			}
-			any_dynasty_member = { # Any kin that felt like they should have owned the sword will be upset that you gave it to that loser
-				limit = {
-					is_close_relative = ROOT
-					OR = {
-						trait = skilled_warrior
-						trait = master_warrior
-					}
-					# hidden_tooltip = {
-						event_target:target_dynastic_sword = {
-							NOT = { has_character_flag = previous_holder_@PREV }
-						}
-					# }
 				}
 				opinion = {
 					who = ROOT
@@ -1330,27 +1180,165 @@ character_event = { # Word is getting out that your family no longer possesses t
 				}
 			}
 		}
-		if = {
-			limit = { NOT = { dynasty_head = { character = ROOT } } }
-			dynasty_head = { 
-				tooltip = { show_portrait = yes }
-				if = {
-					limit = { # You allow this cretin to possess our ancestral sword?
-						has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
-						event_target:target_dynastic_sword = { has_artifact_flag = stolen_from_@ROOT }
+		else = { # The person you granted it to lost it, that bastard
+			prestige = -250
+			any_dynasty_member = { # The loser that lost the sword - this might cause problems if multiple morons have had the same sword stolen. Probably low chance?
+				limit = {
+					event_target:target_dynastic_sword = {
+						has_artifact_flag = stolen_from_@PREV
+					}
+					has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
+				}
+				ROOT = { # How can we ever trust you again to care for our sword?
+					opinion = {
+						who = PREV
+						modifier = opinion_lost_our_sword
+						years = 50
+					}
+				}
+				any_dynasty_member = { # Any kin that felt like they should have owned the sword will be upset that you lost it to that loser
+					limit = {
+						NOT = { is_female = yes }
+						is_adult = yes 
+						event_target:target_dynastic_sword = { # If they lost it before, they don't have room to talk
+							NOT = { has_artifact_flag = stolen_from_@PREV }
+						}
+						NOT = { character = ROOT }
+					}
+					if = {
+						limit = { # If they could have been granted the sword instead, they're going to take it out on you
+							is_close_relative = ROOT
+							OR = {
+								trait = skilled_warrior
+								trait = master_warrior
+							}
+						}
+						opinion = {
+							who = ROOT
+							modifier = opinion_disappointed
+							months = 24
+						}
 					}
 					opinion = {
-						who = ROOT
+						who = PREV
 						modifier = opinion_disappointed
 						months = 60
 					}
 				}
 			}
-			-50
-		}
-		else = {
-			prestige = -500
-			
 		}
 	}
+	option = {
+		trigger = { ai = yes } # Player is head of his or her own dynasty
+		name = EVTOPT_VAPID.31
+		random_dynasty_member = { character_event = { id = vapid.32 } }
+	}
+	
 }
+
+# character_event = { # Word is getting out that your family no longer possesses the sword
+	# id = vapid.31
+	# is_triggered_only = yes # Triggered by event vapid.31
+	# show_portait = FROM
+	# picture = "GFX_evt_valyrian_steel"
+	# #Stack
+	# #ROOT = Player
+	# #FROM = sword stealer
+	# #This = Player
+	# #target_dynasty_sword_creator = oroginal character that declared the sword ancestral
+	# #target_dynastic_sword = the sword in question
+	
+	# desc = {
+		# trigger = { NOT = { dynasty_head = { character = ROOT } } }
+		# text = EVTDESC_not_head_VAPID.31
+	# }
+	# desc = {
+		# trigger = {dynasty_head = { character = ROOT } }
+		# text = EVTDESC_head_VAPID.31
+	# }
+	
+	# trigger = {
+		# event_target:target_dynasty_sword_creator = { dynasty = ROOT }
+	# }
+	
+	# immediate = {
+		# # Maybe use flags to allow this event to fire multiple times 
+	# }
+	
+	# option = {
+		# trigger = { NOT = { dynasty_head = { character = ROOT } } }
+		# name = EVTOPT_head_VAPID.31
+		# prestige = -500
+		# if = {
+			# limit = { # You allowed this cretin to possess our ancestral sword?
+				# has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
+				# event_target:target_dynastic_sword = { has_artifact_flag = stolen_from_@ROOT }
+			# }
+		# }
+		# else = {
+			# any_dynasty_member = { # The loser that lost the sword - this might cause problems if multiple morons have had the same sword stolen. Probably low chance?
+				# limit = {
+					# event_target:target_dynastic_sword = {
+						# has_artifact_flag = stolen_from_@PREV
+					# }
+					# has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
+				# }
+				# any_dynasty_member = { # Any kin that felt like they should have owned the sword will be upset that you lost it to that loser
+					# limit = {
+						# NOT = { is_female = yes }
+						# is_adult = yes 
+						# event_target:target_dynastic_sword = { # If they lost it before, they don't have room to talk
+							# NOT = { has_artifact_flag = stolen_from_@PREV }
+						# }
+					# }
+					# opinion = {
+						# who = ROOT
+						# modifier = opinion_disappointed
+						# months = 60
+					# }
+				# }
+			# }
+			# any_dynasty_member = { # Any kin that felt like they should have owned the sword will be upset that you gave it to that loser
+				# limit = {
+					# is_close_relative = ROOT
+					# OR = {
+						# trait = skilled_warrior
+						# trait = master_warrior
+					# }
+					# # hidden_tooltip = {
+						# event_target:target_dynastic_sword = {
+							# NOT = { has_character_flag = previous_holder_@PREV }
+						# }
+					# # }
+				# }
+				# opinion = {
+					# who = ROOT
+					# modifier = opinion_disappointed
+					# months = 60
+				# }
+			# }
+		# }
+		# if = {
+			# limit = { NOT = { dynasty_head = { character = ROOT } } }
+			# dynasty_head = { 
+				# tooltip = { show_portrait = yes }
+				# if = {
+					# limit = { # You allow this cretin to possess our ancestral sword?
+						# has_opinion_modifier = { who = FROM modifier = opinion_stole_sword }
+						# event_target:target_dynastic_sword = { has_artifact_flag = stolen_from_@ROOT }
+					# }
+					# opinion = {
+						# who = ROOT
+						# modifier = opinion_disappointed
+						# months = 60
+					# }
+				# }
+			# }
+			# -50
+		# }
+		# else = {
+			# prestige = -500
+			
+		# }
+	# }
+# }
